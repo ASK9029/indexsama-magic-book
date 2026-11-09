@@ -13,7 +13,9 @@ export const queryKeys = {
     ['studySessions', subjectId ?? 'all'] as const,
   studyStats: (week: string) => ['studyStats', week] as const,
   checkins: (subjectId: string) => ['checkins', subjectId] as const,
-  materials: (filters: Record<string, string | undefined>) => ['materials', filters] as const,
+  materials: (filters: Record<string, string | undefined>) =>
+    ['materials', filters] as const,
+  material: (id: string) => ['material', id] as const,
   fitnessPlan: ['fitness', 'plan'] as const,
   workoutSession: (id: string) => ['fitness', 'session', id] as const,
   dietDay: (date: string) => ['diet', 'day', date] as const,

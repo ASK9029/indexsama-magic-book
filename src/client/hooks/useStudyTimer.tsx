@@ -19,7 +19,7 @@ interface StudyTimerValue {
   timer: StudyTimer | null;
   elapsedSeconds: number;
   isLoading: boolean;
-  start: (subjectId: string) => void;
+  start: (subjectId: string, materialId?: string) => void;
   pause: () => void;
   resume: () => void;
   stop: () => void;
@@ -76,8 +76,8 @@ export function StudyTimerProvider({ children }: { children: ReactNode }) {
   };
 
   const start = useMutation({
-    mutationFn: (subjectId: string) =>
-      apiPost<StudyTimer>('/api/study/timer/start', { subjectId }),
+    mutationFn: (input: { subjectId: string; materialId?: string }) =>
+      apiPost<StudyTimer>('/api/study/timer/start', input),
     onSuccess: refresh,
     onError,
   });
@@ -121,7 +121,8 @@ export function StudyTimerProvider({ children }: { children: ReactNode }) {
       timer,
       elapsedSeconds,
       isLoading: query.isLoading,
-      start: (subjectId: string) => start.mutate(subjectId),
+      start: (subjectId: string, materialId?: string) =>
+        start.mutate({ subjectId, materialId }),
       pause: () => pause.mutate(),
       resume: () => resume.mutate(),
       stop: () => stop.mutate(),

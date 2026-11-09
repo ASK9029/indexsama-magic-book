@@ -9,6 +9,7 @@ import { useStudyTimer } from '@client/hooks/useStudyTimer';
 import { SubjectOverview } from './SubjectOverview';
 import { SubjectSessions } from './SubjectSessions';
 import { CheckinAlbum } from './CheckinAlbum';
+import { MaterialsPage } from './MaterialsPage';
 
 export function SubjectDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -74,7 +75,7 @@ export function SubjectDetailPage() {
             <CheckinAlbum subjectId={subject.id} />
           </div>
         ) : tab === 'materials' ? (
-          <EmptyState title="资料" description="学习资料将在 Task 13 接入。" />
+          <MaterialsPage defaultSubjectId={subject.id} embedded />
         ) : (
           <SubjectSessions subjectId={subject.id} />
         )}

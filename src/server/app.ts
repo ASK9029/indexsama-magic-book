@@ -15,6 +15,7 @@ import { studyTimerRoutes } from './routes/studyTimer';
 import { studySessionsRoutes } from './routes/studySessions';
 import { filesRoutes } from './routes/files';
 import { checkinsRoutes } from './routes/checkins';
+import { materialsRoutes } from './routes/materials';
 import { sendApiError } from './lib/http';
 import { createDbManager, type DbManager } from './db/connection';
 import { createFileService, type FileService } from './services/files';
@@ -79,6 +80,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   await app.register(studySessionsRoutes);
   await app.register(filesRoutes);
   await app.register(checkinsRoutes);
+  await app.register(materialsRoutes);
 
   const clientDir = path.resolve(process.cwd(), 'dist/client');
   if (existsSync(clientDir)) {

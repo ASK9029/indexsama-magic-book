@@ -85,3 +85,30 @@ export const sessionCreateSchema = z.object({
 });
 
 export const sessionUpdateSchema = sessionCreateSchema.partial();
+
+const tagsSchema = z.array(z.string().trim().min(1).max(30)).max(20);
+
+export const materialLinkCreateSchema = z.object({
+  url: z.string().trim().min(1).max(2000),
+  title: z.string().trim().min(1).max(200),
+  subjectId: z.string().nullable().optional(),
+  tags: tagsSchema.optional().default([]),
+  excerpt: z.string().max(2000).optional().default(''),
+});
+
+export const materialNoteCreateSchema = z.object({
+  title: z.string().trim().min(1).max(200),
+  body: z.string().max(100000).optional().default(''),
+  subjectId: z.string().nullable().optional(),
+  tags: tagsSchema.optional().default([]),
+});
+
+export const materialUpdateSchema = z.object({
+  title: z.string().trim().min(1).max(200).optional(),
+  subjectId: z.string().nullable().optional(),
+  tags: tagsSchema.optional(),
+  status: z.enum(['not_started', 'learning', 'completed']).optional(),
+  progress: z.number().int().min(0).max(100).optional(),
+  excerpt: z.string().max(2000).optional(),
+  body: z.string().max(100000).optional(),
+});
