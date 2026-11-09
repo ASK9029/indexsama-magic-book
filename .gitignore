@@ -1,0 +1,9 @@
+node_modules/
+dist/
+data/
+release/
+.e2e-data/
+.superpowers/
+.pnpm-store/
+*.log
+.env
