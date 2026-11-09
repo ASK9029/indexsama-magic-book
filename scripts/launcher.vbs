@@ -5,13 +5,15 @@ base = fso.GetParentFolderName(WScript.ScriptFullName)
 urlFile = base & "\data\server-url.txt"
 errorFile = base & "\data\server-error.txt"
 
-' 数据目录固定在发布目录下，程序更新不会碰 data。
+' Keep user data inside the release data folder.
 shell.Environment("PROCESS")("DATA_DIR") = base & "\data"
 
 On Error Resume Next
-' 清掉上一次强制退出可能残留的地址，等待本次服务写入新地址。
+' Remove a stale URL left by a forced shutdown so we only open the fresh one.
 If fso.FileExists(urlFile) Then fso.DeleteFile urlFile, True
-shell.Run """" & base & "\runtime\node.exe"" """ & base & "\app\server\index.mjs""", 0, False
+
+cmd = Chr(34) & base & "\runtime\node.exe" & Chr(34) & " " & Chr(34) & base & "\app\server\index.mjs" & Chr(34)
+shell.Run cmd, 0, False
 
 For i = 1 To 20
   WScript.Sleep 1000
@@ -26,5 +28,7 @@ For i = 1 To 20
   End If
 Next
 
-message = "启动超时。请检查 " & errorFile & " 或手动运行 runtime\node.exe app\server\index.mjs。"
-MsgBox message, 16, "IndexSama的魔法录"
+' Title is built with ChrW so the .vbs file stays ASCII-only for WSH.
+title = "IndexSama" & ChrW(30340) & ChrW(39764) & ChrW(27861) & ChrW(24405)
+message = "Startup timed out. Check " & errorFile & " or run runtime\node.exe app\server\index.mjs manually."
+MsgBox message, 16, title
