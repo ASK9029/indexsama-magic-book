@@ -9,6 +9,8 @@ errorFile = base & "\data\server-error.txt"
 shell.Environment("PROCESS")("DATA_DIR") = base & "\data"
 
 On Error Resume Next
+' 清掉上一次强制退出可能残留的地址，等待本次服务写入新地址。
+If fso.FileExists(urlFile) Then fso.DeleteFile urlFile, True
 shell.Run """" & base & "\runtime\node.exe"" """ & base & "\app\server\index.mjs""", 0, False
 
 For i = 1 To 20

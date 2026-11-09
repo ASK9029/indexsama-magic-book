@@ -1640,9 +1640,8 @@ git commit -m "feat: aggregate home and today from all modules"
 - `npm run package` 产出 `release/IndexSama的魔法录/`：
   - `启动IndexSama的魔法录.vbs`
   - `runtime/node.exe`（复制 `process.execPath`）
-  - `app/server/index.mjs`（tsup 构建）
+  - `app/server/index.mjs`（自包含，服务端依赖已打包）
   - `app/client/**`（vite build）
-  - `app/node_modules/**`（生产依赖，含 better-sqlite3 原生模块）
   - `data/`（已存在则保留，绝不覆盖/删除；仅首次创建空目录）
   - `README.txt`
 - 启动器：检查 `http://127.0.0.1:43110/api/health`，已运行则直接开浏览器；否则隐藏启动 `runtime\node.exe app\server\index.mjs`，等待 `data/server-url.txt` 出现，读取 URL 打开默认浏览器。服务退出时删 URL 文件。

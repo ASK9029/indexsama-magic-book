@@ -37,7 +37,7 @@ pnpm test:all      # 单元/集成 + 打包测试
 pnpm package
 ```
 
-产出 `release/IndexSama的魔法录/`：`runtime/node.exe`、`app/server`、`app/client`、`app/node_modules`、`启动IndexSama的魔法录.vbs`、`README.txt`、`data/`。
+产出 `release/IndexSama的魔法录/`：`runtime/node.exe`、`app/server`（自包含服务端）、`app/client`、`启动IndexSama的魔法录.vbs`、`README.txt`、`data/`。
 
 - 双击 `启动IndexSama的魔法录.vbs` 启动并在浏览器打开；数据始终保存在发布目录的 `data/`，更新程序不会覆盖/删除。
 - 端口 43110–43119 自动回退，实际地址写入 `data/server-url.txt`。

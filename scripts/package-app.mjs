@@ -56,17 +56,6 @@ export async function buildRelease(targetDir, options = {}) {
   await cp(path.join(root, 'dist', 'server'), path.join(appDir, 'server'), {
     recursive: true,
   });
-  const modulesRoot = path.join(root, 'node_modules');
-  await cp(modulesRoot, path.join(appDir, 'node_modules'), {
-    recursive: true,
-    dereference: true,
-    filter: (source) => {
-      const relative = path.relative(modulesRoot, source);
-      if (!relative) return true;
-      const first = relative.split(path.sep)[0];
-      return first !== '.pnpm' && first !== '.bin';
-    },
-  });
   await cp(path.join(root, 'package.json'), path.join(appDir, 'package.json'));
   await cp(process.execPath, path.join(runtimeDir, 'node.exe'));
   await cp(
