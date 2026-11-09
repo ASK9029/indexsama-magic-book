@@ -6,6 +6,7 @@ import { useTheme } from '@client/hooks/useTheme';
 import { SettingsTabs } from './SettingsTabs';
 import { AppearanceTab } from './AppearanceTab';
 import { DataTab } from './DataTab';
+import { PreferencesTab } from './PreferencesTab';
 
 export function SettingsPage() {
   const [params, setParams] = useSearchParams();
@@ -32,10 +33,7 @@ export function SettingsPage() {
         ) : active === 'appearance' ? (
           <AppearanceTab settings={settings} update={update} />
         ) : active === 'preferences' ? (
-          <EmptyState
-            title="偏好设置"
-            description="每周起始日、单位和目标将在 Task 23 接入。"
-          />
+          <PreferencesTab settings={settings} update={update} />
         ) : (
           <EmptyState title="危险区" description="清空数据将在 Task 24 接入。" />
         )}

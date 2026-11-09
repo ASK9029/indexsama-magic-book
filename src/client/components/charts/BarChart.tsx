@@ -2,6 +2,7 @@ import {
   Bar,
   BarChart as RechartsBarChart,
   CartesianGrid,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -12,9 +13,11 @@ import type { SeriesPoint } from '@shared/types';
 export function BarChart({
   data,
   unit = '',
+  target = null,
 }: {
   data: SeriesPoint[];
   unit?: string;
+  target?: number | null;
 }) {
   const hasData = data.some((point) => point.value !== null);
   if (!hasData) {
@@ -27,6 +30,13 @@ export function BarChart({
         <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
         <XAxis dataKey="label" tick={{ fontSize: 11 }} stroke="var(--muted)" />
         <YAxis tick={{ fontSize: 11 }} stroke="var(--muted)" />
+        {target !== null ? (
+          <ReferenceLine
+            y={target}
+            stroke="var(--muted)"
+            strokeDasharray="4 4"
+          />
+        ) : null}
         <Tooltip
           formatter={(value) => (value == null ? '—' : `${value} ${unit}`)}
         />
