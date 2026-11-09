@@ -17,7 +17,7 @@ test('exports a full backup and restores it', async ({ page, request }) => {
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: '导出备份' }).click();
   const download = await downloadPromise;
-  expect(download.suggestedFilename()).toContain('我的生活-备份');
+  expect(download.suggestedFilename()).toContain('IndexSama的魔法录-备份');
   const backupPath = await download.path();
   expect(backupPath).not.toBeNull();
 

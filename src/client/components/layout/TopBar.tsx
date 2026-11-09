@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { Plus } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
+import { APP_NAME } from '@shared/constants';
 import { Button } from '../ui/Button';
 import { formatDateLabel, todayLocal } from '@client/lib/clientDates';
 import { useQuickAdd } from '@client/hooks/useQuickAdd';
@@ -18,7 +20,12 @@ const titles: Record<string, string> = {
 export function TopBar() {
   const { pathname } = useLocation();
   const { openMenu } = useQuickAdd();
-  const title = titles[pathname] ?? '我的生活';
+  const title = titles[pathname] ?? APP_NAME;
+
+  useEffect(() => {
+    document.title =
+      title === APP_NAME ? APP_NAME : `${title} · ${APP_NAME}`;
+  }, [title]);
 
   return (
     <header className="flex h-16 shrink-0 items-center justify-between border-b border-line bg-surface/80 px-6 backdrop-blur">

@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '@client/components/ui/Button';
 import { Card } from '@client/components/ui/Card';
 import { useDataInfo } from '@client/hooks/useDataInfo';
+import { APP_NAME } from '@shared/constants';
 import { RestoreDialog } from './RestoreDialog';
 
 function formatDateTime(value: string | null): string {
@@ -36,7 +37,7 @@ export function BackupTab() {
       const match = disposition.match(/filename\*=UTF-8''([^;]+)/i);
       const filename = match
         ? decodeURIComponent(match[1])
-        : '我的生活-备份.zip';
+        : `${APP_NAME}-备份.zip`;
       const url = URL.createObjectURL(blob);
       const anchor = document.createElement('a');
       anchor.href = url;

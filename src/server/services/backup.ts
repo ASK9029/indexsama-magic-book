@@ -9,6 +9,7 @@ import archiver, { type Archiver } from 'archiver';
 import * as yauzl from 'yauzl';
 import { pipeline } from 'node:stream/promises';
 import { toLocalDate } from '@shared/dates';
+import { APP_NAME } from '@shared/constants';
 import type { DbManager } from '../db/connection';
 import { migrate } from '../db/migrate';
 import { seedExercises } from '../db/seed/exercises';
@@ -50,7 +51,7 @@ function timestamp(): string {
 }
 
 export function backupFileName(now = new Date()): string {
-  return `我的生活-备份-${toLocalDate(now)}-${pad2(now.getHours())}${pad2(now.getMinutes())}.zip`;
+  return `${APP_NAME}-备份-${toLocalDate(now)}-${pad2(now.getHours())}${pad2(now.getMinutes())}.zip`;
 }
 
 function buildManifest(db: DatabaseSync): BackupManifest {

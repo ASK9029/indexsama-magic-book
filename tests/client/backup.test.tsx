@@ -48,7 +48,7 @@ beforeEach(() => {
           status: 200,
           headers: {
             'content-type': 'application/zip',
-            'content-disposition': `attachment; filename*=UTF-8''${encodeURIComponent('我的生活-备份-2026-11-09-0800.zip')}`,
+            'content-disposition': `attachment; filename*=UTF-8''${encodeURIComponent('IndexSama的魔法录-备份-2026-11-09-0800.zip')}`,
           },
         });
       }

@@ -1,4 +1,5 @@
-﻿import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { APP_NAME } from '@shared/constants';
 import { cn } from '@client/lib/cn';
 
 const groups = [
@@ -33,7 +34,7 @@ const groups = [
 export function Sidebar() {
   return (
     <aside className="flex h-screen w-[232px] shrink-0 flex-col border-r border-line bg-[var(--sidebar)] px-4 py-5">
-      <div className="mb-6 px-2 text-lg font-semibold tracking-wide">我的生活</div>
+      <div className="mb-6 px-2 text-lg font-semibold tracking-wide">{APP_NAME}</div>
 
       <nav className="flex-1 space-y-5 overflow-y-auto">
         {groups.map((group) => (

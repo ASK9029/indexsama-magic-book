@@ -1,4 +1,4 @@
-﻿export const APP_NAME = '我的生活';
+export const APP_NAME = 'IndexSama的魔法录';
 export const APP_VERSION = '1.0.0';
 
 export const DEFAULT_SETTINGS = {

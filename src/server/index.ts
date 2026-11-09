@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import { APP_NAME } from '@shared/constants';
 import { buildApp } from './app';
 import { resolveDataDir } from './config';
 
@@ -55,9 +56,9 @@ if (listeningPort === null) {
     `无法启动本地服务。最后错误：${String(lastError)}\n`,
     'utf8',
   );
-  console.error('我的生活 failed to start', lastError);
+  console.error(`${APP_NAME} failed to start`, lastError);
   process.exit(1);
 }
 
 writeFileSync(urlFile, `http://127.0.0.1:${listeningPort}`, 'utf8');
-console.log(`我的生活 running at http://127.0.0.1:${listeningPort}`);
+console.log(`${APP_NAME} running at http://127.0.0.1:${listeningPort}`);

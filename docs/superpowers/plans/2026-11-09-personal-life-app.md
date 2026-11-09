@@ -1527,7 +1527,7 @@ git commit -m "feat: add settings preferences and data overview"
 - Test: `tests/server/backup.test.ts`, `tests/client/backup.test.tsx`
 
 **Interfaces:**
-- `GET /api/backup -> application/zip` 下载，文件名 `我的生活-备份-YYYY-MM-DD-HHmm.zip`；zip 含 `manifest.json`、`app.db`、`files/**`。
+- `GET /api/backup -> application/zip` 下载，文件名 `IndexSama的魔法录-备份-YYYY-MM-DD-HHmm.zip`；zip 含 `manifest.json`、`app.db`、`files/**`。
 - `POST /api/restore`（multipart zip）-> `{ ok: true, manifest }`；校验版本/格式/数据库；恢复前写 `data/backups/pre-restore-<timestamp>.zip`；失败回退。
 - `POST /api/data/clear` body `{ confirm: '清空' } -> { ok: true }`；删除 DB/文件/设置，重建空库。
 - 备份成功后写 `settings.lastBackupAt`。
@@ -1637,8 +1637,8 @@ git commit -m "feat: aggregate home and today from all modules"
 - Test: `tests/server/package.test.ts`（或 `tests/e2e/package.spec.ts`）
 
 **Interfaces:**
-- `npm run package` 产出 `release/我的生活/`：
-  - `启动我的生活.vbs`
+- `npm run package` 产出 `release/IndexSama的魔法录/`：
+  - `启动IndexSama的魔法录.vbs`
   - `runtime/node.exe`（复制 `process.execPath`）
   - `app/server/index.mjs`（tsup 构建）
   - `app/client/**`（vite build）
@@ -1675,7 +1675,7 @@ Expected: PASS。
 
 - [ ] **Step 5: 手工验证双击启动**
 
-双击 `release/我的生活/启动我的生活.vbs` → 浏览器打开；关闭浏览器再双击 → 数据在；设置退出 → 服务停止。
+双击 `release/IndexSama的魔法录/启动IndexSama的魔法录.vbs` → 浏览器打开；关闭浏览器再双击 → 数据在；设置退出 → 服务停止。
 Expected: 满足 PRD §2.1/§7.9。
 
 - [ ] **Step 6: 提交**

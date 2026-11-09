@@ -25,4 +25,4 @@ For i = 1 To 20
 Next
 
 message = "启动超时。请检查 " & errorFile & " 或手动运行 runtime\node.exe app\server\index.mjs。"
-MsgBox message, 16, "我的生活"
+MsgBox message, 16, "IndexSama的魔法录"

@@ -71,7 +71,7 @@ export async function buildRelease(targetDir, options = {}) {
   await cp(process.execPath, path.join(runtimeDir, 'node.exe'));
   await cp(
     path.join(root, 'scripts', 'launcher.vbs'),
-    path.join(target, '启动我的生活.vbs'),
+    path.join(target, '启动IndexSama的魔法录.vbs'),
   );
   await cp(
     path.join(root, 'scripts', 'README.txt'),
@@ -94,7 +94,7 @@ if (
   const target =
     targetIndex >= 0
       ? process.argv[targetIndex + 1]
-      : path.join(root, 'release', '我的生活');
+      : path.join(root, 'release', 'IndexSama的魔法录');
   const result = await buildRelease(target);
   console.log(`release ready: ${result.target}`);
 }
