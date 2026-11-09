@@ -1,7 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, useLocation, useRoutes } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { routes } from '../../src/client/router';
 
 function TestRoutes() {
@@ -13,13 +14,33 @@ function LocationProbe() {
   return <span data-testid="location">{location.pathname}</span>;
 }
 
+afterEach(() => vi.unstubAllGlobals());
+
 describe('app shell', () => {
   it('shows 8 nav entries and switches route', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockImplementation(() =>
+        Promise.resolve(
+          new Response('[]', {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+          }),
+        ),
+      ),
+    );
+
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <TestRoutes />
-        <LocationProbe />
-      </MemoryRouter>,
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter initialEntries={['/']}>
+          <TestRoutes />
+          <LocationProbe />
+        </MemoryRouter>
+      </QueryClientProvider>,
     );
 
     for (const label of [

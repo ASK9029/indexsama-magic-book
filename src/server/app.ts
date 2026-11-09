@@ -6,6 +6,7 @@ import path from 'node:path';
 import { healthRoutes } from './routes/health';
 import { systemRoutes } from './routes/system';
 import { settingsRoutes } from './routes/settings';
+import { memosRoutes } from './routes/memos';
 import { sendApiError } from './lib/http';
 import { createDbManager, type DbManager } from './db/connection';
 import { migrate } from './db/migrate';
@@ -51,6 +52,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   await app.register(healthRoutes);
   await app.register(systemRoutes);
   await app.register(settingsRoutes);
+  await app.register(memosRoutes);
 
   const clientDir = path.resolve(process.cwd(), 'dist/client');
   if (existsSync(clientDir)) {

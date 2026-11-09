@@ -3,6 +3,7 @@ import { AppShell } from './components/layout/AppShell';
 import { EmptyState } from './components/ui/EmptyState';
 import { PageHeader } from './components/ui/PageHeader';
 import { SettingsPage } from './features/settings/SettingsPage';
+import { HomePage } from './features/home/HomePage';
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -21,7 +22,7 @@ export const routes: RouteObject[] = [
     path: '/',
     element: <AppShell />,
     children: [
-      { index: true, element: <Placeholder title="首页" /> },
+      { index: true, element: <HomePage /> },
       { path: 'today', element: <Placeholder title="今日计划" /> },
       { path: 'study/subjects', element: <Placeholder title="学习科目" /> },
       { path: 'study/materials', element: <Placeholder title="学习资料" /> },
