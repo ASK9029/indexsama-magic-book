@@ -12,7 +12,9 @@ export const taskCreateSchema = z.object({
   note: z.string().max(2000).optional().default(''),
 });
 
-export const taskUpdateSchema = taskCreateSchema.partial();
+export const taskUpdateSchema = taskCreateSchema.partial().extend({
+  done: z.boolean().optional(),
+});
 
 export const memoCreateSchema = z.object({
   text: z.string().trim().min(1).max(500),

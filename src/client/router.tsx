@@ -4,6 +4,7 @@ import { EmptyState } from './components/ui/EmptyState';
 import { PageHeader } from './components/ui/PageHeader';
 import { SettingsPage } from './features/settings/SettingsPage';
 import { HomePage } from './features/home/HomePage';
+import { TodayPage } from './features/today/TodayPage';
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -23,7 +24,7 @@ export const routes: RouteObject[] = [
     element: <AppShell />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: 'today', element: <Placeholder title="今日计划" /> },
+      { path: 'today', element: <TodayPage /> },
       { path: 'study/subjects', element: <Placeholder title="学习科目" /> },
       { path: 'study/materials', element: <Placeholder title="学习资料" /> },
       { path: 'fitness', element: <Placeholder title="健身计划" /> },
