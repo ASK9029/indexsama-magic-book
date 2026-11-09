@@ -7,3 +7,5 @@ release/
 .pnpm-store/
 *.log
 .env
+test-results/
+playwright-report/

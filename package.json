@@ -15,7 +15,7 @@
     "test:package": "vitest run tests/server/package.test.ts",
     "test:all": "pnpm test && pnpm test:package",
     "test:watch": "vitest",
-    "test:e2e": "playwright test",
+    "test:e2e": "node node_modules/vite/bin/vite.js build && node node_modules/tsup/dist/cli-default.js src/server/index.ts --format esm --out-dir dist/server --platform node --target node22 && node scripts/copy-migrations.mjs && playwright test",
     "lint": "eslint .",
     "format": "prettier --write .",
     "package": "node scripts/package-app.mjs"
