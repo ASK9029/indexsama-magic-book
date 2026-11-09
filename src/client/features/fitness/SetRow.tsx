@@ -5,10 +5,12 @@ import type { WorkoutSet } from '@shared/types';
 
 export function SetRow({
   set,
+  defaultWeight,
   onUpdate,
   onDelete,
 }: {
   set: WorkoutSet;
+  defaultWeight?: number | null;
   onUpdate: (patch: { weightKg?: number | null; reps?: number; done?: boolean }) => void;
   onDelete: () => void;
 }) {
@@ -21,7 +23,7 @@ export function SetRow({
         step={0.5}
         aria-label={`第 ${set.setNo} 组重量`}
         className="h-8 w-20"
-        value={set.weightKg ?? ''}
+        value={set.weightKg ?? defaultWeight ?? ''}
         placeholder="kg"
         onChange={(event) =>
           onUpdate({

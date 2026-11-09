@@ -4,6 +4,7 @@ import { Card } from '@client/components/ui/Card';
 import { Input } from '@client/components/ui/Input';
 import { Select } from '@client/components/ui/Select';
 import { useExercises } from '@client/hooks/useExercises';
+import { useCurrentWeights } from '@client/hooks/useUpgrades';
 import type { Exercise } from '@shared/types';
 import { ExerciseModal } from './ExerciseModal';
 
@@ -24,6 +25,7 @@ export function ExerciseLibraryPage() {
     equipment: equipment || undefined,
     type: type || undefined,
   });
+  const { data: currentWeights = [] } = useCurrentWeights();
 
   const save = (input: Parameters<typeof create.mutate>[0]) => {
     if (editing) update.mutate({ id: editing.id, patch: input });
@@ -102,6 +104,19 @@ export function ExerciseLibraryPage() {
                 {exercise.muscleGroup} · {exercise.equipment} ·{' '}
                 {exercise.type === 'weight' ? '重量' : '徒手'}
               </p>
+              {(() => {
+                const current = currentWeights.find(
+                  (item) => item.exerciseId === exercise.id,
+                );
+                return current ? (
+                  <p className="text-xs text-muted">
+                    当前{' '}
+                    {current.currentWeightKg !== null
+                      ? `${current.currentWeightKg} kg`
+                      : '—'}
+                  </p>
+                ) : null;
+              })()}
               {exercise.notes ? (
                 <p className="text-xs text-muted">{exercise.notes}</p>
               ) : null}

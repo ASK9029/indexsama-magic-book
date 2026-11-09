@@ -8,6 +8,7 @@ import {
   useWorkoutSession,
 } from '@client/hooks/useWorkout';
 import { formatClock } from '@client/components/layout/StudyTimerBar';
+import { useCurrentWeights } from '@client/hooks/useUpgrades';
 import type { WorkoutSession, WorkoutSet } from '@shared/types';
 import { ExercisePicker } from './ExercisePicker';
 import { ExerciseSetCard } from './ExerciseSetCard';
@@ -20,6 +21,7 @@ export function SessionPage() {
   const { confirm } = useConfirm();
   const { data: session, isLoading } = useWorkoutSession(id);
   const { exercises } = useExercises();
+  const { data: currentWeights = [] } = useCurrentWeights();
   const {
     addSet,
     updateSet,
@@ -159,6 +161,13 @@ export function SessionPage() {
               key={key}
               exerciseName={sets[0].exerciseName}
               sets={sets}
+              defaultWeight={
+                sets[0].exerciseId
+                  ? (currentWeights.find(
+                      (item) => item.exerciseId === sets[0].exerciseId,
+                    )?.currentWeightKg ?? null)
+                  : null
+              }
               onAddSet={() =>
                 addSetFor(sets[0].exerciseId, sets[0].exerciseName)
               }

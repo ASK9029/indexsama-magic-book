@@ -53,6 +53,7 @@ describe('weekly fitness plan', () => {
 
         if (url === '/api/fitness/plan' && method === 'GET') return json(days);
         if (url === '/api/fitness/exercises') return json([exercise]);
+        if (url === '/api/fitness/current-weights') return json([]);
         if (url === '/api/fitness/plan/1' && method === 'PUT') {
           return json({ ...days[0], name: '推日改' });
         }

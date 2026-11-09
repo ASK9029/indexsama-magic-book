@@ -5,6 +5,7 @@ import { useExercises } from '@client/hooks/useExercises';
 import { useFitnessPlan } from '@client/hooks/useFitnessPlan';
 import type { PlanDay, PlanExercise } from '@shared/types';
 import { PlanDayModal } from './PlanDayModal';
+import { CurrentWeightTable } from './CurrentWeightTable';
 
 const WEEKDAYS = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
 
@@ -65,6 +66,8 @@ export function WeeklyPlanPage() {
           ))}
         </div>
       )}
+
+      <CurrentWeightTable />
 
       {editing ? (
         <PlanDayModal

@@ -6,12 +6,14 @@ import { SetRow } from './SetRow';
 export function ExerciseSetCard({
   exerciseName,
   sets,
+  defaultWeight,
   onAddSet,
   onUpdateSet,
   onDeleteSet,
 }: {
   exerciseName: string;
   sets: WorkoutSet[];
+  defaultWeight?: number | null;
   onAddSet: () => void;
   onUpdateSet: (
     id: string,
@@ -32,6 +34,7 @@ export function ExerciseSetCard({
           <SetRow
             key={set.id}
             set={set}
+            defaultWeight={defaultWeight}
             onUpdate={(patch) => onUpdateSet(set.id, patch)}
             onDelete={() => onDeleteSet(set.id)}
           />

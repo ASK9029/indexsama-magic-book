@@ -168,3 +168,13 @@ export const workoutFinishSchema = z.object({
   note: z.string().max(2000).optional().default(''),
   confirmEmpty: z.boolean().optional().default(false),
 });
+
+export const upgradeCreateSchema = z.object({
+  exerciseId: z.string().min(1),
+  date: dateSchema,
+  fromWeightKg: z.number().positive().optional(),
+  toWeightKg: z.number().positive(),
+  note: z.string().max(500).optional().default(''),
+});
+
+export const upgradeUpdateSchema = upgradeCreateSchema.partial();

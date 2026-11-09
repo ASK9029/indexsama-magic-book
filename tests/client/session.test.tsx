@@ -68,6 +68,7 @@ describe('workout session page', () => {
           return json(completed);
         }
         if (url === '/api/fitness/exercises') return json([]);
+        if (url === '/api/fitness/current-weights') return json([]);
         return json({ ok: true });
       },
     );
