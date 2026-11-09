@@ -62,3 +62,26 @@ export const arrangementCreateSchema = z.object({
 export const arrangementUpdateSchema = arrangementCreateSchema
   .partial()
   .extend({ done: z.boolean().optional() });
+
+export const timerStartSchema = z.object({
+  subjectId: z.string().min(1),
+  materialId: z.string().nullable().optional(),
+  arrangementId: z.string().nullable().optional(),
+});
+
+export const timerStopSchema = z.object({
+  note: z.string().max(500).optional().default(''),
+});
+
+export const sessionCreateSchema = z.object({
+  subjectId: z.string().min(1),
+  materialId: z.string().nullable().optional(),
+  arrangementId: z.string().nullable().optional(),
+  date: dateSchema,
+  startAt: z.string().min(1),
+  endAt: z.string().min(1),
+  durationMinutes: z.number().int().min(1).max(1440),
+  note: z.string().max(500).optional().default(''),
+});
+
+export const sessionUpdateSchema = sessionCreateSchema.partial();

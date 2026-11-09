@@ -7,14 +7,20 @@ import type { Subject } from '@shared/types';
 export function SubjectCard({
   subject,
   archived = false,
+  weekMinutes = 0,
+  totalMinutes = 0,
   onEdit,
   onArchive,
+  onStart,
   onRestore,
 }: {
   subject: Subject;
   archived?: boolean;
+  weekMinutes?: number;
+  totalMinutes?: number;
   onEdit?: (subject: Subject) => void;
   onArchive?: (subject: Subject) => void;
+  onStart?: (subject: Subject) => void;
   onRestore?: (subject: Subject) => void;
 }) {
   const weeklyHours = (subject.weeklyTargetMinutes / 60).toFixed(1);
@@ -43,11 +49,13 @@ export function SubjectCard({
 
       <div>
         <div className="flex justify-between text-xs text-muted">
-          <span>本周 0 / {weeklyHours} 小时</span>
-          <span>累计 0 分钟</span>
+          <span>
+            本周 {weekMinutes} 分钟 / {weeklyHours} 小时
+          </span>
+          <span>累计 {totalMinutes} 分钟</span>
         </div>
         <ProgressBar
-          value={0}
+          value={weekMinutes}
           max={Math.max(subject.weeklyTargetMinutes, 1)}
           className="mt-1"
         />
@@ -67,7 +75,12 @@ export function SubjectCard({
             <Button size="sm" variant="ghost" onClick={() => onArchive?.(subject)}>
               归档
             </Button>
-            <Button size="sm" variant="secondary" disabled>
+            <Button
+              size="sm"
+              variant="secondary"
+              disabled={!onStart}
+              onClick={() => onStart?.(subject)}
+            >
               开始学习
             </Button>
           </div>

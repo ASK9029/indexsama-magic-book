@@ -10,6 +10,8 @@ import { memosRoutes } from './routes/memos';
 import { tasksRoutes } from './routes/tasks';
 import { subjectsRoutes } from './routes/subjects';
 import { studyArrangementsRoutes } from './routes/studyArrangements';
+import { studyTimerRoutes } from './routes/studyTimer';
+import { studySessionsRoutes } from './routes/studySessions';
 import { sendApiError } from './lib/http';
 import { createDbManager, type DbManager } from './db/connection';
 import { migrate } from './db/migrate';
@@ -59,6 +61,8 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   await app.register(tasksRoutes);
   await app.register(subjectsRoutes);
   await app.register(studyArrangementsRoutes);
+  await app.register(studyTimerRoutes);
+  await app.register(studySessionsRoutes);
 
   const clientDir = path.resolve(process.cwd(), 'dist/client');
   if (existsSync(clientDir)) {

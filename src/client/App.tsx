@@ -6,6 +6,7 @@ import { ConfirmProvider } from './components/ui/Confirm';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { ThemeSync } from './components/layout/ThemeSync';
 import { QuickAddProvider } from './hooks/useQuickAdd';
+import { StudyTimerProvider } from './hooks/useStudyTimer';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false, refetchOnWindowFocus: false } },
@@ -21,7 +22,9 @@ export default function App() {
         <ToastProvider>
           <ConfirmProvider>
             <QuickAddProvider>
-              <RouterProvider router={router} />
+              <StudyTimerProvider>
+                <RouterProvider router={router} />
+              </StudyTimerProvider>
             </QuickAddProvider>
           </ConfirmProvider>
         </ToastProvider>

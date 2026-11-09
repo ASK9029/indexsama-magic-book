@@ -9,17 +9,35 @@ import {
   type ArrangementInput,
 } from '@client/hooks/useArrangements';
 import { useSubjects, type SubjectInput } from '@client/hooks/useSubjects';
+import { useStudySessions } from '@client/hooks/useStudySessions';
+import { useStudyStats } from '@client/hooks/useStudyStats';
+import { useStudyTimer } from '@client/hooks/useStudyTimer';
 import { todayLocal } from '@client/lib/clientDates';
 import type { StudyArrangement, Subject } from '@shared/types';
 import { ArrangementModal } from './ArrangementModal';
 import { SubjectCard } from './SubjectCard';
 import { SubjectModal } from './SubjectModal';
+import { StudyWeekCard } from './StudyWeekCard';
 
 export function SubjectsPage() {
   const today = todayLocal();
   const active = useSubjects(false);
   const archived = useSubjects(true);
   const arrangements = useArrangements(today);
+  const { sessions: allSessions } = useStudySessions();
+  const { data: weekStats } = useStudyStats(today);
+  const studyTimer = useStudyTimer();
+
+  const weekBySubject = new Map(
+    (weekStats?.bySubject ?? []).map((item) => [item.subjectId, item.minutes]),
+  );
+  const totalBySubject = new Map<string, number>();
+  for (const session of allSessions) {
+    totalBySubject.set(
+      session.subjectId,
+      (totalBySubject.get(session.subjectId) ?? 0) + session.durationMinutes,
+    );
+  }
 
   const [showArchived, setShowArchived] = useState(false);
   const [subjectModalOpen, setSubjectModalOpen] = useState(false);
@@ -164,10 +182,7 @@ export function SubjectsPage() {
           ) : null}
         </Card>
 
-        <Card>
-          <h2 className="text-base font-medium text-ink">本周学习</h2>
-          <p className="mt-2 text-sm text-muted">每周学习统计将在 Task 11 接入。</p>
-        </Card>
+        <StudyWeekCard week={today} />
       </div>
 
       <div className="mb-3 flex items-center justify-between">
@@ -206,8 +221,11 @@ export function SubjectsPage() {
               key={subject.id}
               subject={subject}
               archived={showArchived}
+              weekMinutes={weekBySubject.get(subject.id) ?? 0}
+              totalMinutes={totalBySubject.get(subject.id) ?? 0}
               onEdit={openEditSubject}
               onArchive={(item) => active.archive.mutate(item.id)}
+              onStart={(item) => studyTimer.start(item.id)}
               onRestore={(item) => active.restore.mutate(item.id)}
             />
           ))}

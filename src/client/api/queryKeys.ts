@@ -8,6 +8,10 @@ export const queryKeys = {
   archivedSubjects: ['subjects', 'archived'] as const,
   subject: (id: string) => ['subject', id] as const,
   arrangements: (date: string) => ['arrangements', date] as const,
+  studyTimer: ['studyTimer'] as const,
+  studySessions: (subjectId?: string) =>
+    ['studySessions', subjectId ?? 'all'] as const,
+  studyStats: (week: string) => ['studyStats', week] as const,
   materials: (filters: Record<string, string | undefined>) => ['materials', filters] as const,
   fitnessPlan: ['fitness', 'plan'] as const,
   workoutSession: (id: string) => ['fitness', 'session', id] as const,

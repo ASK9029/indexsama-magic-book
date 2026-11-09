@@ -35,6 +35,10 @@ describe('study subjects page', () => {
         if (url === '/api/subjects' && method === 'GET') return json([subject]);
         if (url === '/api/subjects?archived=1') return json([]);
         if (url.startsWith('/api/study/arrangements?date=')) return json([]);
+        if (url === '/api/study/sessions') return json([]);
+        if (url.startsWith('/api/study/stats?week=')) {
+          return json({ days: [], totalMinutes: 0, bySubject: [] });
+        }
         if (url === '/api/subjects' && method === 'POST') {
           return json(
             {
