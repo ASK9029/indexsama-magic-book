@@ -1,7 +1,8 @@
-﻿import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router-dom';
 import { AppShell } from './components/layout/AppShell';
 import { EmptyState } from './components/ui/EmptyState';
 import { PageHeader } from './components/ui/PageHeader';
+import { SettingsPage } from './features/settings/SettingsPage';
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -27,7 +28,7 @@ export const routes: RouteObject[] = [
       { path: 'fitness', element: <Placeholder title="健身计划" /> },
       { path: 'diet', element: <Placeholder title="饮食计划" /> },
       { path: 'games', element: <Placeholder title="游戏娱乐" /> },
-      { path: 'settings', element: <Placeholder title="数据与设置" /> },
+      { path: 'settings', element: <SettingsPage /> },
     ],
   },
 ];
