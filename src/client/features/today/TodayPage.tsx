@@ -36,6 +36,8 @@ export function TodayPage() {
   const { subjects } = useSubjects(false);
   const { data: day } = useDay(date);
   const dietMutations = useDietMutations(date);
+  const prevDate = addDays(date, -1);
+  const prev = useTasks(prevDate);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Task | null>(null);
@@ -60,6 +62,7 @@ export function TodayPage() {
   );
   const progressDone = day?.progress?.done ?? doneCount;
   const progressTotal = day?.progress?.total ?? tasks.length;
+  const prevIncomplete = prev.tasks.filter((task) => !task.done);
 
   const openCreate = () => {
     setEditing(null);
@@ -123,6 +126,33 @@ export function TodayPage() {
         done={progressDone}
         total={progressTotal}
       />
+
+      {prevIncomplete.length > 0 ? (
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-card border border-amber-300 bg-amber-50 px-4 py-3">
+          <span className="text-sm text-amber-800">
+            昨天还有 {prevIncomplete.length} 件未完成
+          </span>
+          <div className="flex items-center gap-2">
+            <Link
+              to={`/today?date=${prevDate}`}
+              className="text-sm text-accent"
+            >
+              查看昨天
+            </Link>
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() => {
+                prevIncomplete.forEach((task) =>
+                  prev.carryOver.mutate({ id: task.id, targetDate: date }),
+                );
+              }}
+            >
+              全部顺延
+            </Button>
+          </div>
+        </div>
+      ) : null}
 
       <div className="space-y-4">
         <TaskGroup title="我的事项" count={visible.length}>
