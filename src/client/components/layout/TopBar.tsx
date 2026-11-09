@@ -1,7 +1,8 @@
-﻿import { Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { Button } from '../ui/Button';
 import { formatDateLabel, todayLocal } from '@client/lib/clientDates';
+import { useQuickAdd } from '@client/hooks/useQuickAdd';
 
 const titles: Record<string, string> = {
   '/': '首页',
@@ -16,6 +17,7 @@ const titles: Record<string, string> = {
 
 export function TopBar() {
   const { pathname } = useLocation();
+  const { openMenu } = useQuickAdd();
   const title = titles[pathname] ?? '我的生活';
 
   return (
@@ -23,7 +25,7 @@ export function TopBar() {
       <h1 className="text-lg font-semibold text-ink">{title}</h1>
       <div className="flex items-center gap-3">
         <span className="text-sm text-muted">{formatDateLabel(todayLocal())}</span>
-        <Button size="sm" variant="secondary">
+        <Button size="sm" variant="secondary" onClick={openMenu}>
           <Plus size={16} />
           快速添加
         </Button>

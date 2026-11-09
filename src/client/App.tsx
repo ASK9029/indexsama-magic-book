@@ -5,6 +5,7 @@ import { ToastProvider } from './components/ui/Toast';
 import { ConfirmProvider } from './components/ui/Confirm';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { ThemeSync } from './components/layout/ThemeSync';
+import { QuickAddProvider } from './hooks/useQuickAdd';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false, refetchOnWindowFocus: false } },
@@ -19,7 +20,9 @@ export default function App() {
         <ThemeSync />
         <ToastProvider>
           <ConfirmProvider>
-            <RouterProvider router={router} />
+            <QuickAddProvider>
+              <RouterProvider router={router} />
+            </QuickAddProvider>
           </ConfirmProvider>
         </ToastProvider>
       </QueryClientProvider>

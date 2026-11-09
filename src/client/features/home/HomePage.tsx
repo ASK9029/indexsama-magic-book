@@ -1,20 +1,37 @@
 import { useState } from 'react';
 import { PageHeader } from '@client/components/ui/PageHeader';
-import { QuickMemoCard } from './QuickMemoCard';
+import { ProgressBar } from '@client/components/ui/ProgressBar';
+import { useTasks } from '@client/hooks/useTasks';
+import { todayLocal } from '@client/lib/clientDates';
 import { MemoDrawer } from './MemoDrawer';
+import { QuickMemoCard } from './QuickMemoCard';
+import { SummaryCards } from './SummaryCards';
+import { TodayPlanCard } from './TodayPlanCard';
 
 export function HomePage() {
   const [memoOpen, setMemoOpen] = useState(false);
+  const { tasks } = useTasks(todayLocal());
+  const done = tasks.filter((task) => task.done).length;
+  const incomplete = tasks.length - done;
 
   return (
     <div>
-      <PageHeader title="今天" subtitle="今天要做的事，一眼看完" />
+      <PageHeader title="今天" subtitle={`还有 ${incomplete} 件事没做`} />
+
+      <div className="mb-5">
+        <ProgressBar value={done} max={Math.max(tasks.length, 1)} />
+        <p className="mt-1 text-xs text-muted">
+          已完成 {done} / {tasks.length}
+        </p>
+      </div>
 
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
-        <div className="rounded-card border border-dashed border-line bg-surface/60 p-6 text-sm text-muted">
-          今日计划将在 Task 8/9 接入。
-        </div>
+        <TodayPlanCard />
         <QuickMemoCard onOpenAll={() => setMemoOpen(true)} />
+      </div>
+
+      <div className="mt-5">
+        <SummaryCards />
       </div>
 
       <MemoDrawer open={memoOpen} onClose={() => setMemoOpen(false)} />
