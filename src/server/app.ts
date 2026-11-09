@@ -28,6 +28,7 @@ import { waterRoutes } from './routes/water';
 import { dietStatsRoutes } from './routes/dietStats';
 import { gamesRoutes } from './routes/games';
 import { dataInfoRoutes } from './routes/dataInfo';
+import { backupRoutes } from './routes/backup';
 import { sendApiError } from './lib/http';
 import { createDbManager, type DbManager } from './db/connection';
 import { createFileService, type FileService } from './services/files';
@@ -70,7 +71,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   seedFoods(dbManager.get());
   app.decorate('dbManager', dbManager);
   const fileService = createFileService(
-    dbManager.get(),
+    () => dbManager.get(),
     path.join(options.dataDir, 'files'),
   );
   app.decorate('fileService', fileService);
@@ -109,6 +110,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   await app.register(dietStatsRoutes);
   await app.register(gamesRoutes);
   await app.register(dataInfoRoutes);
+  await app.register(backupRoutes);
 
   const clientDir = path.resolve(process.cwd(), 'dist/client');
   if (existsSync(clientDir)) {

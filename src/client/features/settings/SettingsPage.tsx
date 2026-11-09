@@ -7,6 +7,7 @@ import { AppearanceTab } from './AppearanceTab';
 import { DataTab } from './DataTab';
 import { PreferencesTab } from './PreferencesTab';
 import { DangerTab } from './DangerTab';
+import { BackupTab } from './BackupTab';
 
 export function SettingsPage() {
   const [params, setParams] = useSearchParams();
@@ -30,6 +31,8 @@ export function SettingsPage() {
           <div className="text-sm text-muted">正在加载设置…</div>
         ) : active === 'data' ? (
           <DataTab />
+        ) : active === 'backup' ? (
+          <BackupTab />
         ) : active === 'appearance' ? (
           <AppearanceTab settings={settings} update={update} />
         ) : active === 'preferences' ? (

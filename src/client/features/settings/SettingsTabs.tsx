@@ -2,6 +2,7 @@ import { Tabs } from '@client/components/ui/Tabs';
 
 const items = [
   { value: 'data', label: '数据' },
+  { value: 'backup', label: '备份' },
   { value: 'appearance', label: '外观' },
   { value: 'preferences', label: '偏好' },
   { value: 'danger', label: '危险区' },

@@ -50,7 +50,7 @@ export class FileService {
   private readonly root: string;
 
   constructor(
-    private readonly db: DatabaseSync,
+    private readonly getDb: () => DatabaseSync,
     root: string,
   ) {
     this.root = path.resolve(root);
@@ -84,7 +84,7 @@ export class FileService {
     await writeFile(absolutePath, buffer);
 
     const now = new Date().toISOString();
-    this.db
+    this.getDb()
       .prepare(
         'INSERT INTO files(id, original_name, stored_path, mime, size, kind, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
       )
@@ -133,7 +133,7 @@ export class FileService {
     await pipeline(stream, counter, createWriteStream(absolutePath));
 
     const now = new Date().toISOString();
-    this.db
+    this.getDb()
       .prepare(
         'INSERT INTO files(id, original_name, stored_path, mime, size, kind, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
       )
@@ -143,7 +143,7 @@ export class FileService {
   }
 
   get(fileId: string): FileRecord | null {
-    const row = this.db
+    const row = this.getDb()
       .prepare(
         'SELECT id, original_name, stored_path, mime, size, kind, created_at FROM files WHERE id = ?',
       )
@@ -152,7 +152,7 @@ export class FileService {
   }
 
   pathFor(fileId: string): string {
-    const row = this.db
+    const row = this.getDb()
       .prepare('SELECT stored_path FROM files WHERE id = ?')
       .get(fileId) as unknown as { stored_path: string } | undefined;
     if (!row) throw new Error('FILE_NOT_FOUND');
@@ -172,7 +172,7 @@ export class FileService {
   }
 
   async delete(fileId: string): Promise<void> {
-    const row = this.db
+    const row = this.getDb()
       .prepare('SELECT stored_path FROM files WHERE id = ?')
       .get(fileId) as unknown as { stored_path: string } | undefined;
     if (!row) return;
@@ -183,13 +183,13 @@ export class FileService {
       // The file may already be gone; the metadata still needs removal.
     }
 
-    this.db.prepare('DELETE FROM files WHERE id = ?').run(fileId);
+    this.getDb().prepare('DELETE FROM files WHERE id = ?').run(fileId);
   }
 }
 
 export function createFileService(
-  db: DatabaseSync,
+  getDb: () => DatabaseSync,
   root: string,
 ): FileService {
-  return new FileService(db, root);
+  return new FileService(getDb, root);
 }

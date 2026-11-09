@@ -273,3 +273,7 @@ export const gameUpdateSchema = gameCreateSchema.partial();
 export const gamePlaytimeSchema = z.object({
   minutes: z.number().int().nonnegative().max(10000),
 });
+
+export const clearDataSchema = z.object({
+  confirm: z.literal('清空'),
+});

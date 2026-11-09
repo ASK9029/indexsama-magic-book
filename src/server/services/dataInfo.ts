@@ -37,6 +37,20 @@ function count(db: DatabaseSync, table: string): number {
   return row.count;
 }
 
+export function getCounts(db: DatabaseSync): DataInfo['counts'] {
+  return {
+    tasks: count(db, 'tasks'),
+    memos: count(db, 'memos'),
+    subjects: count(db, 'subjects'),
+    materials: count(db, 'materials'),
+    checkins: count(db, 'checkin_photos'),
+    sessions: count(db, 'study_sessions'),
+    workouts: count(db, 'workout_sessions'),
+    meals: count(db, 'meal_entries'),
+    games: count(db, 'games'),
+  };
+}
+
 export async function getDataInfo(
   db: DatabaseSync,
   dataDir: string,
@@ -47,17 +61,7 @@ export async function getDataInfo(
 
   return {
     dataDir,
-    counts: {
-      tasks: count(db, 'tasks'),
-      memos: count(db, 'memos'),
-      subjects: count(db, 'subjects'),
-      materials: count(db, 'materials'),
-      checkins: count(db, 'checkin_photos'),
-      sessions: count(db, 'study_sessions'),
-      workouts: count(db, 'workout_sessions'),
-      meals: count(db, 'meal_entries'),
-      games: count(db, 'games'),
-    },
+    counts: getCounts(db),
     storage: {
       dbBytes: dbStat.size,
       filesBytes,
