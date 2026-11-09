@@ -3,6 +3,7 @@ import fastifyStatic from '@fastify/static';
 import fastifyMultipart from '@fastify/multipart';
 import { existsSync } from 'node:fs';
 import { mkdir } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { healthRoutes } from './routes/health';
 import { systemRoutes } from './routes/system';
@@ -82,7 +83,6 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   });
 
   app.setErrorHandler((error, _request, reply) => sendApiError(reply, error));
-  app.setNotFoundHandler(apiNotFound);
 
   await app.register(fastifyMultipart, {
     limits: { fileSize: 20 * 1024 * 1024, files: 20 },
@@ -116,8 +116,14 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   await app.register(dayRoutes);
   await app.register(homeRoutes);
 
-  const clientDir = path.resolve(process.cwd(), 'dist/client');
-  if (existsSync(clientDir)) {
+  const clientCandidates = [
+    path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../client'),
+    path.resolve(process.cwd(), 'dist/client'),
+  ];
+  const clientDir = clientCandidates.find((dir) =>
+    existsSync(path.join(dir, 'index.html')),
+  );
+  if (clientDir) {
     await app.register(fastifyStatic, { root: clientDir });
     app.setNotFoundHandler((request, reply) => {
       if (request.url.startsWith('/api/')) {
@@ -127,6 +133,8 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       }
       return reply.sendFile('index.html');
     });
+  } else {
+    app.setNotFoundHandler(apiNotFound);
   }
 
   return app;
