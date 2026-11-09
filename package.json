@@ -13,7 +13,7 @@
     "start": "node dist/server/index.mjs",
     "test": "vitest run --exclude tests/server/package.test.ts",
     "test:package": "vitest run tests/server/package.test.ts",
-    "test:all": "pnpm test && pnpm test:package",
+    "test:all": "vitest run --exclude tests/server/package.test.ts && vitest run tests/server/package.test.ts",
     "test:watch": "vitest",
     "test:e2e": "node node_modules/vite/bin/vite.js build && node node_modules/tsup/dist/cli-default.js src/server/index.ts --format esm --out-dir dist/server --platform node --target node22 && node scripts/copy-migrations.mjs && playwright test",
     "lint": "eslint .",
