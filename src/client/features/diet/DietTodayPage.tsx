@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Card } from '@client/components/ui/Card';
 import { DateNav } from '@client/components/ui/DateNav';
 import { useDietDay, useDietMutations } from '@client/hooks/useDietDay';
 import { todayLocal } from '@client/lib/clientDates';
-import { formatCalories } from '@shared/format';
 import type { Meal } from '@shared/types';
 import { CopyPlanDialog } from './CopyPlanDialog';
+import { DietSummaryRail } from './DietSummaryRail';
 import { FoodPickerDrawer } from './FoodPickerDrawer';
 import { MealCard } from './MealCard';
 
@@ -43,40 +42,6 @@ export function DietTodayPage() {
         ) : null}
       </div>
 
-      <div className="mb-4 grid gap-3 sm:grid-cols-3">
-        <Card>
-          <p className="text-xs text-muted">今日摄入</p>
-          <p className="mt-1 text-lg font-semibold text-ink">
-            {formatCalories(day.summary.calories)}
-          </p>
-          <p className="mt-1 text-xs text-muted">
-            目标{' '}
-            {day.targets.calorieTarget !== null
-              ? formatCalories(day.targets.calorieTarget)
-              : '未设置'}
-          </p>
-        </Card>
-        <Card>
-          <p className="text-xs text-muted">蛋白质</p>
-          <p className="mt-1 text-lg font-semibold text-ink">
-            {day.summary.protein.toFixed(1)} g
-          </p>
-          <p className="mt-1 text-xs text-muted">
-            目标{' '}
-            {day.targets.proteinTarget !== null
-              ? `${day.targets.proteinTarget} g`
-              : '未设置'}
-          </p>
-        </Card>
-        <Card>
-          <p className="text-xs text-muted">完成餐次</p>
-          <p className="mt-1 text-lg font-semibold text-ink">
-            {day.meals.filter((meal) => meal.done).length} / 4
-          </p>
-          <p className="mt-1 text-xs text-muted">勾选与实际记录分开</p>
-        </Card>
-      </div>
-
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
         <div className="space-y-4">
           {day.meals.map((bucket) => (
@@ -106,10 +71,7 @@ export function DietTodayPage() {
           ))}
         </div>
 
-        <Card>
-          <h2 className="text-base font-medium text-ink">饮水与体重</h2>
-          <p className="mt-2 text-sm text-muted">饮水和体重将在 Task 20 接入。</p>
-        </Card>
+        <DietSummaryRail day={day} date={date} future={future} />
       </div>
 
       {picker ? (

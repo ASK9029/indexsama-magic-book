@@ -240,3 +240,12 @@ export const mealClearSchema = z.object({
   date: dateSchema,
   kind: z.enum(['plan', 'actual']),
 });
+
+export const waterCreateSchema = z.object({
+  date: dateSchema,
+  amountMl: z.number().int().positive().max(5000),
+});
+
+export const waterUndoSchema = z.object({
+  date: dateSchema,
+});

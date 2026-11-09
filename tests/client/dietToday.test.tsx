@@ -50,7 +50,14 @@ const meals: MealBucket[] = (
 const day: DietDay = {
   date: '2026-11-09',
   meals,
-  summary: { calories: 232, protein: 5.2 },
+  summary: {
+    calories: 232,
+    protein: 5.2,
+    waterMl: 0,
+    waterTarget: null,
+    weightKg: null,
+    weightLoggedAt: null,
+  },
   targets: { calorieTarget: null, proteinTarget: null, waterTarget: null },
 };
 

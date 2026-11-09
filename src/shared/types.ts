@@ -227,7 +227,14 @@ export interface MealBucket {
 export interface DietDay {
   date: LocalDate;
   meals: MealBucket[];
-  summary: { calories: number; protein: number };
+  summary: {
+    calories: number;
+    protein: number;
+    waterMl: number;
+    waterTarget: number | null;
+    weightKg: number | null;
+    weightLoggedAt: string | null;
+  };
   targets: {
     calorieTarget: number | null;
     proteinTarget: number | null;

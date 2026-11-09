@@ -23,6 +23,7 @@ export const queryKeys = {
   upgrades: (exerciseId?: string) => ['upgrades', exerciseId ?? 'all'] as const,
   workoutSession: (id: string) => ['fitness', 'session', id] as const,
   dietDay: (date: string) => ['dietDay', date] as const,
+  water: (date: string) => ['water', date] as const,
   games: (filters: Record<string, string | undefined>) => ['games', filters] as const,
   fitnessStats: (view: string, anchor: string, exerciseId?: string) =>
     ['stats', 'fitness', view, anchor, exerciseId ?? ''] as const,

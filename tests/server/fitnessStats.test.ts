@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -21,6 +21,8 @@ async function updateSet(
 }
 
 beforeAll(async () => {
+  vi.useFakeTimers({ toFake: ['Date'] });
+  vi.setSystemTime(new Date('2026-12-01T12:00:00'));
   dir = await mkdtemp(join(tmpdir(), 'life-fitness-stats-'));
   app = await buildApp({ dataDir: dir, dbPath: join(dir, 'app.db'), logger: false });
 
@@ -109,6 +111,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await app?.close();
   if (dir) await rm(dir, { recursive: true, force: true });
+  vi.useRealTimers();
 });
 
 describe('fitness stats and weights', () => {

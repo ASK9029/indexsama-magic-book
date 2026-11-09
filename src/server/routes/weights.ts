@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import type { FastifyInstance } from 'fastify';
+import { toLocalDate } from '@shared/dates';
 import type { WeightLog } from '@shared/types';
 import { weightCreateSchema, weightUpdateSchema } from '@shared/schemas';
 import { ApiError } from '../lib/errors';
@@ -28,6 +29,12 @@ function optionalDate(value: unknown): string | undefined {
     throw new ApiError('VALIDATION_ERROR', '日期格式应为 YYYY-MM-DD', 400);
   }
   return value;
+}
+
+function assertNotFuture(date: string): void {
+  if (date > toLocalDate(new Date())) {
+    throw new ApiError('FUTURE_DATE', '不能记录未来日期的体重', 400);
+  }
 }
 
 export async function weightsRoutes(app: FastifyInstance): Promise<void> {
@@ -74,6 +81,7 @@ export async function weightsRoutes(app: FastifyInstance): Promise<void> {
 
     const id = randomUUID();
     const now = new Date().toISOString();
+    assertNotFuture(parsed.data.date);
     app.dbManager
       .get()
       .prepare(
@@ -108,8 +116,11 @@ export async function weightsRoutes(app: FastifyInstance): Promise<void> {
         .get(request.params.id) as unknown as WeightRow | undefined;
       if (!current) throw new ApiError('WEIGHT_NOT_FOUND', '体重记录不存在', 404);
 
+      const date = parsed.data.date ?? current.date;
+      assertNotFuture(date);
+
       db.prepare('UPDATE weight_logs SET date = ?, weight_kg = ? WHERE id = ?').run(
-        parsed.data.date ?? current.date,
+        date,
         parsed.data.weightKg ?? current.weight_kg,
         current.id,
       );

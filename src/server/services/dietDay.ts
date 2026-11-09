@@ -2,6 +2,7 @@ import type { DatabaseSync } from 'node:sqlite';
 import type { DietDay, Meal, MealEntry } from '@shared/types';
 import { getSetting } from '../repositories/settings';
 import { listEntries, listMealStatus } from '../repositories/meals';
+import { latestWeight, totalWater } from '../repositories/water';
 
 const MEALS: Meal[] = ['breakfast', 'lunch', 'dinner', 'snack'];
 
@@ -41,16 +42,24 @@ export function getDietDay(db: DatabaseSync, date: string): DietDay {
     };
   });
 
-  const summary = totals(entries.filter((entry) => entry.kind === 'actual'));
+  const actual = totals(entries.filter((entry) => entry.kind === 'actual'));
+  const weight = latestWeight(db, date);
+  const targets = {
+    calorieTarget: getSetting<number | null>(db, 'calorieTarget', null),
+    proteinTarget: getSetting<number | null>(db, 'proteinTarget', null),
+    waterTarget: getSetting<number | null>(db, 'waterTarget', null),
+  };
 
   return {
     date,
     meals,
-    summary,
-    targets: {
-      calorieTarget: getSetting<number | null>(db, 'calorieTarget', null),
-      proteinTarget: getSetting<number | null>(db, 'proteinTarget', null),
-      waterTarget: getSetting<number | null>(db, 'waterTarget', null),
+    summary: {
+      ...actual,
+      waterMl: totalWater(db, date),
+      waterTarget: targets.waterTarget,
+      weightKg: weight?.weightKg ?? null,
+      weightLoggedAt: weight?.loggedAt ?? null,
     },
+    targets,
   };
 }
