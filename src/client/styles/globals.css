@@ -1,0 +1,40 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #f6f4ef;
+  --surface: #ffffff;
+  --text: #23211e;
+  --muted: #77726a;
+  --accent: #2f6b5e;
+  --border: #e6e1d8;
+  --sidebar: #f1eee7;
+}
+
+[data-theme='dark'] {
+  --bg: #15171a;
+  --surface: #1e2126;
+  --text: #e9e6df;
+  --muted: #a09a90;
+  --accent: #6fb8a4;
+  --border: #2c3036;
+  --sidebar: #191c20;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
