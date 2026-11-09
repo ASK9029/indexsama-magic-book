@@ -34,6 +34,30 @@ function runBuild() {
   );
 }
 
+function createShortcut(targetDir) {
+  const target = path.resolve(targetDir);
+  const lnk = path.join(target, 'IndexSama的魔法录.lnk');
+  const launcher = path.join(target, '启动IndexSama的魔法录.vbs');
+  const icon = path.join(target, 'IndexSama的魔法录.ico');
+  const quote = (value) => `'${value.replace(/'/g, "''")}'`;
+
+  const script = [
+    '$shell = New-Object -ComObject WScript.Shell',
+    `$s = $shell.CreateShortcut(${quote(lnk)})`,
+    `$s.TargetPath = Join-Path $env:WINDIR 'System32\\wscript.exe'`,
+    `$s.Arguments = ${quote(`"${launcher}"`)}`,
+    `$s.WorkingDirectory = ${quote(target)}`,
+    `$s.IconLocation = ${quote(icon)}`,
+    `$s.Description = 'IndexSama的魔法录'`,
+    '$s.WindowStyle = 1',
+    '$s.Save()',
+  ].join('; ');
+
+  execFileSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', script], {
+    stdio: 'ignore',
+  });
+}
+
 export async function buildRelease(targetDir, options = {}) {
   const target = path.resolve(targetDir);
   if (!options.skipBuild) runBuild();
@@ -66,6 +90,11 @@ export async function buildRelease(targetDir, options = {}) {
     path.join(root, 'scripts', 'README.txt'),
     path.join(target, 'README.txt'),
   );
+  await cp(
+    path.join(root, 'public', 'favicon.ico'),
+    path.join(target, 'IndexSama的魔法录.ico'),
+  );
+  createShortcut(target);
 
   // Existing data is user data: create the directory only when missing.
   if (!existsSync(dataDir)) {

@@ -37,6 +37,11 @@ describe('portable package', () => {
     expect(
       existsSync(path.join(target, 'app', 'client', 'index.html')),
     ).toBe(true);
+    expect(
+      existsSync(path.join(target, 'app', 'client', 'favicon.ico')),
+    ).toBe(true);
+    expect(existsSync(path.join(target, 'IndexSama的魔法录.ico'))).toBe(true);
+    expect(existsSync(path.join(target, 'IndexSama的魔法录.lnk'))).toBe(true);
     expect(existsSync(path.join(target, '启动IndexSama的魔法录.vbs'))).toBe(true);
     expect(existsSync(path.join(target, 'README.txt'))).toBe(true);
     expect(existsSync(path.join(target, 'data', 'marker.txt'))).toBe(true);

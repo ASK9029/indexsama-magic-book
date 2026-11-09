@@ -34,7 +34,14 @@ const groups = [
 export function Sidebar() {
   return (
     <aside className="flex h-screen w-[232px] shrink-0 flex-col border-r border-line bg-[var(--sidebar)] px-4 py-5">
-      <div className="mb-6 px-2 text-lg font-semibold tracking-wide">{APP_NAME}</div>
+      <div className="mb-6 flex items-center gap-2 px-2">
+        <img
+          src="/icon-192.png"
+          alt=""
+          className="h-8 w-8 rounded-full border border-line object-cover"
+        />
+        <div className="text-lg font-semibold tracking-wide">{APP_NAME}</div>
+      </div>
 
       <nav className="flex-1 space-y-5 overflow-y-auto">
         {groups.map((group) => (

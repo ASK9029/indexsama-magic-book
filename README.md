@@ -37,9 +37,9 @@ pnpm test:all      # 单元/集成 + 打包测试
 pnpm package
 ```
 
-产出 `release/IndexSama的魔法录/`：`runtime/node.exe`、`app/server`（自包含服务端）、`app/client`、`启动IndexSama的魔法录.vbs`、`README.txt`、`data/`。
+产出 `release/IndexSama的魔法录/`：`runtime/node.exe`、`app/server`（自包含服务端）、`app/client`、`IndexSama的魔法录.ico`、`IndexSama的魔法录.lnk`、`启动IndexSama的魔法录.vbs`、`README.txt`、`data/`。
 
-- 双击 `启动IndexSama的魔法录.vbs` 启动并在浏览器打开；数据始终保存在发布目录的 `data/`，更新程序不会覆盖/删除。
+- 双击 `IndexSama的魔法录.lnk`（带产品图标）启动并在浏览器打开；也可以直接双击 `.vbs`。数据始终保存在发布目录的 `data/`，更新程序不会覆盖/删除。
 - 端口 43110–43119 自动回退，实际地址写入 `data/server-url.txt`。
 - 设置 → 备份：导出完整 zip（数据库 + 文件/照片/封面）；恢复前自动写 `data/backups/pre-restore-*.zip` 留底。
 - 设置 → 危险区：必须输入“清空”才会重置数据库、文件与设置。

@@ -1,7 +1,8 @@
 IndexSama的魔法录 — 本地个人生活管理
 
 启动：
-  双击「启动IndexSama的魔法录.vbs」。首次启动会打开浏览器；之后关闭浏览器不会丢数据。
+  双击「IndexSama的魔法录.lnk」（带产品图标）；也可以双击「启动IndexSama的魔法录.vbs」。
+  首次启动会打开浏览器；之后关闭浏览器不会丢数据。
 
 数据：
   所有数据都在 data 目录（app.db、files、backups）。
