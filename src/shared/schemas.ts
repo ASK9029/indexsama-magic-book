@@ -42,3 +42,23 @@ export const apiErrorSchema = z.object({
     details: z.unknown().optional(),
   }),
 });
+
+export const subjectCreateSchema = z.object({
+  name: z.string().trim().min(1).max(50),
+  color: z.string().regex(/^#[0-9a-fA-F]{6}$/, '颜色格式应为 #RRGGBB'),
+  goal: z.string().max(200).optional().default(''),
+  weeklyTargetMinutes: z.number().int().min(0).max(10080).optional().default(0),
+});
+
+export const subjectUpdateSchema = subjectCreateSchema.partial();
+
+export const arrangementCreateSchema = z.object({
+  subjectId: z.string().min(1),
+  date: dateSchema,
+  content: z.string().trim().min(1).max(500),
+  plannedMinutes: z.number().int().min(1).max(600),
+});
+
+export const arrangementUpdateSchema = arrangementCreateSchema
+  .partial()
+  .extend({ done: z.boolean().optional() });

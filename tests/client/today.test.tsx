@@ -36,6 +36,12 @@ describe('today page', () => {
         if (url.startsWith('/api/tasks?date=') && (!init?.method || init.method === 'GET')) {
           return json([task]);
         }
+        if (url.startsWith('/api/study/arrangements?date=')) {
+          return json([]);
+        }
+        if (url === '/api/subjects') {
+          return json([]);
+        }
         if (url === '/api/tasks/t1' && init?.method === 'PATCH') {
           return json({ ...task, done: true });
         }

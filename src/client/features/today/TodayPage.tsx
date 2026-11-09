@@ -4,6 +4,8 @@ import { Plus } from 'lucide-react';
 import { addDays } from '@shared/dates';
 import { todayLocal } from '@client/lib/clientDates';
 import { useTasks, type TaskInput } from '@client/hooks/useTasks';
+import { useArrangements } from '@client/hooks/useArrangements';
+import { useSubjects } from '@client/hooks/useSubjects';
 import { Button } from '@client/components/ui/Button';
 import { EmptyState } from '@client/components/ui/EmptyState';
 import { PageHeader } from '@client/components/ui/PageHeader';
@@ -17,6 +19,12 @@ export function TodayPage() {
   const [params, setParams] = useSearchParams();
   const date = params.get('date') ?? todayLocal();
   const { tasks, isLoading, create, update, remove, carryOver } = useTasks(date);
+  const {
+    arrangements,
+    isLoading: arrangementsLoading,
+    update: updateArrangement,
+  } = useArrangements(date);
+  const { subjects } = useSubjects(false);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Task | null>(null);
@@ -122,7 +130,44 @@ export function TodayPage() {
           )}
         </TaskGroup>
 
-        <TaskGroup title="学习" placeholder="尚未接入" />
+        <TaskGroup title="学习" count={arrangements.length}>
+          {arrangementsLoading ? (
+            <p className="px-2 py-4 text-sm text-muted">正在加载…</p>
+          ) : arrangements.length === 0 ? (
+            <p className="px-2 py-4 text-sm text-muted">今天没有学习安排。</p>
+          ) : (
+            arrangements.map((arrangement) => {
+              const subject = subjects.find(
+                (item) => item.id === arrangement.subjectId,
+              );
+              return (
+                <div
+                  key={arrangement.id}
+                  className="flex items-center gap-3 rounded-[10px] px-2 py-2.5"
+                >
+                  <input
+                    type="checkbox"
+                    checked={arrangement.done}
+                    onChange={() =>
+                      updateArrangement.mutate({
+                        id: arrangement.id,
+                        patch: { done: !arrangement.done },
+                      })
+                    }
+                    aria-label={`完成 ${arrangement.content}`}
+                    className="h-4 w-4 rounded border-line accent-[var(--accent)]"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm text-ink">{arrangement.content}</p>
+                    <p className="text-xs text-muted">
+                      {subject?.name ?? '未知科目'} · {arrangement.plannedMinutes} 分钟
+                    </p>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </TaskGroup>
         <TaskGroup title="健身" placeholder="尚未接入" />
         <TaskGroup title="饮食" placeholder="尚未接入" />
       </div>

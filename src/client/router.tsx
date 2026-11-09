@@ -5,6 +5,8 @@ import { PageHeader } from './components/ui/PageHeader';
 import { SettingsPage } from './features/settings/SettingsPage';
 import { HomePage } from './features/home/HomePage';
 import { TodayPage } from './features/today/TodayPage';
+import { SubjectsPage } from './features/study/SubjectsPage';
+import { SubjectDetailPage } from './features/study/SubjectDetailPage';
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -25,7 +27,8 @@ export const routes: RouteObject[] = [
     children: [
       { index: true, element: <HomePage /> },
       { path: 'today', element: <TodayPage /> },
-      { path: 'study/subjects', element: <Placeholder title="学习科目" /> },
+      { path: 'study/subjects', element: <SubjectsPage /> },
+      { path: 'study/subjects/:id', element: <SubjectDetailPage /> },
       { path: 'study/materials', element: <Placeholder title="学习资料" /> },
       { path: 'fitness', element: <Placeholder title="健身计划" /> },
       { path: 'diet', element: <Placeholder title="饮食计划" /> },
