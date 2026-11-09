@@ -213,6 +213,28 @@ export interface MealState {
   done: boolean;
 }
 
+export interface MealBucket {
+  meal: Meal;
+  plannedEntries: MealEntry[];
+  actualEntries: MealEntry[];
+  plannedCalories: number;
+  plannedProtein: number;
+  actualCalories: number;
+  actualProtein: number;
+  done: boolean;
+}
+
+export interface DietDay {
+  date: LocalDate;
+  meals: MealBucket[];
+  summary: { calories: number; protein: number };
+  targets: {
+    calorieTarget: number | null;
+    proteinTarget: number | null;
+    waterTarget: number | null;
+  };
+}
+
 export interface WaterLog {
   id: string;
   date: LocalDate;

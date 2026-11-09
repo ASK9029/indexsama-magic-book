@@ -2,6 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 import { EmptyState } from '@client/components/ui/EmptyState';
 import { PageHeader } from '@client/components/ui/PageHeader';
 import { DietTabs } from './DietTabs';
+import { DietTodayPage } from './DietTodayPage';
 import { FoodLibraryPage } from './FoodLibraryPage';
 
 export function DietPage() {
@@ -25,7 +26,7 @@ export function DietPage() {
         ) : tab === 'stats' ? (
           <EmptyState title="饮食统计" description="饮食统计将在 Task 21 接入。" />
         ) : (
-          <EmptyState title="今日饮食" description="今日饮食将在 Task 19 接入。" />
+          <DietTodayPage />
         )}
       </div>
     </div>

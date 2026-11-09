@@ -208,3 +208,35 @@ export const foodCreateSchema = z.object({
 });
 
 export const foodUpdateSchema = foodCreateSchema.partial();
+
+export const MEALS = ['breakfast', 'lunch', 'dinner', 'snack'] as const;
+
+export const mealEntryCreateSchema = z.object({
+  date: dateSchema,
+  meal: z.enum(MEALS),
+  kind: z.enum(['plan', 'actual']),
+  foodId: z.string().min(1),
+  amount: z.number().positive().max(10000),
+  unit: z.enum(['g', 'ml']),
+  servingLabel: z.string().max(30).nullable().optional(),
+});
+
+export const mealEntryUpdateSchema = z.object({
+  amount: z.number().positive().max(10000).optional(),
+  meal: z.enum(MEALS).optional(),
+});
+
+export const mealDoneSchema = z.object({
+  date: dateSchema,
+  done: z.boolean(),
+});
+
+export const mealCopyPlanSchema = z.object({
+  date: dateSchema,
+  mode: z.enum(['replace', 'append']),
+});
+
+export const mealClearSchema = z.object({
+  date: dateSchema,
+  kind: z.enum(['plan', 'actual']),
+});

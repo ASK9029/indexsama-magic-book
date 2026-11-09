@@ -22,7 +22,7 @@ export const queryKeys = {
   currentWeights: ['currentWeights'] as const,
   upgrades: (exerciseId?: string) => ['upgrades', exerciseId ?? 'all'] as const,
   workoutSession: (id: string) => ['fitness', 'session', id] as const,
-  dietDay: (date: string) => ['diet', 'day', date] as const,
+  dietDay: (date: string) => ['dietDay', date] as const,
   games: (filters: Record<string, string | undefined>) => ['games', filters] as const,
   fitnessStats: (view: string, anchor: string, exerciseId?: string) =>
     ['stats', 'fitness', view, anchor, exerciseId ?? ''] as const,
