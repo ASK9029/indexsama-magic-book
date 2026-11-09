@@ -11,6 +11,7 @@ import { MaterialsPage } from './features/study/MaterialsPage';
 import { MaterialDetailPage } from './features/study/MaterialDetailPage';
 import { FitnessPage } from './features/fitness/FitnessPage';
 import { SessionPage } from './features/fitness/SessionPage';
+import { DietPage } from './features/diet/DietPage';
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -36,7 +37,7 @@ export const routes: RouteObject[] = [
       { path: 'study/materials', element: <MaterialsPage /> },
       { path: 'study/materials/:id', element: <MaterialDetailPage /> },
       { path: 'fitness', element: <FitnessPage /> },
-      { path: 'diet', element: <Placeholder title="饮食计划" /> },
+      { path: 'diet', element: <DietPage /> },
       { path: 'games', element: <Placeholder title="游戏娱乐" /> },
       { path: 'settings', element: <SettingsPage /> },
     ],

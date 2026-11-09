@@ -185,3 +185,26 @@ export const weightCreateSchema = z.object({
 });
 
 export const weightUpdateSchema = weightCreateSchema.partial();
+
+export const FOOD_CATEGORIES = [
+  '主食',
+  '肉蛋奶',
+  '蔬菜',
+  '水果',
+  '豆类',
+  '零食',
+  '饮料',
+  '家常菜',
+] as const;
+
+export const foodCreateSchema = z.object({
+  name: z.string().trim().min(1).max(50),
+  category: z.enum(FOOD_CATEGORIES),
+  unit: z.enum(['g', 'ml']),
+  per100Calories: z.number().nonnegative().max(10000),
+  per100Protein: z.number().nonnegative().max(1000),
+  servingName: z.string().max(30).nullable().optional(),
+  servingAmount: z.number().positive().max(10000).nullable().optional(),
+});
+
+export const foodUpdateSchema = foodCreateSchema.partial();

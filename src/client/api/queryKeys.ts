@@ -29,4 +29,8 @@ export const queryKeys = {
   dietStats: (view: string, anchor: string) => ['stats', 'diet', view, anchor] as const,
   weights: (from?: string, to?: string) =>
     ['weights', from ?? '', to ?? ''] as const,
+  foods: (filters: Record<string, string | undefined>) =>
+    ['foods', filters] as const,
+  recentFoods: ['foods', 'recent'] as const,
+  frequentFoods: ['foods', 'frequent'] as const,
 };

@@ -22,10 +22,12 @@ import { workoutsRoutes } from './routes/workouts';
 import { upgradesRoutes } from './routes/upgrades';
 import { fitnessStatsRoutes } from './routes/fitnessStats';
 import { weightsRoutes } from './routes/weights';
+import { foodsRoutes } from './routes/foods';
 import { sendApiError } from './lib/http';
 import { createDbManager, type DbManager } from './db/connection';
 import { createFileService, type FileService } from './services/files';
 import { seedExercises } from './db/seed/exercises';
+import { seedFoods } from './db/seed/foods';
 import { migrate } from './db/migrate';
 
 declare module 'fastify' {
@@ -60,6 +62,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   const dbManager = createDbManager(dbPath);
   migrate(dbManager.get());
   seedExercises(dbManager.get());
+  seedFoods(dbManager.get());
   app.decorate('dbManager', dbManager);
   const fileService = createFileService(
     dbManager.get(),
@@ -95,6 +98,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   await app.register(upgradesRoutes);
   await app.register(fitnessStatsRoutes);
   await app.register(weightsRoutes);
+  await app.register(foodsRoutes);
 
   const clientDir = path.resolve(process.cwd(), 'dist/client');
   if (existsSync(clientDir)) {
