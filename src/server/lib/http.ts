@@ -7,6 +7,7 @@ export function sendApiError(reply: FastifyReply, error: unknown): FastifyReply 
       error: { code: error.code, message: error.message, details: error.details },
     });
   }
+  console.error(error);
   return reply.status(500).send({
     error: { code: 'INTERNAL_ERROR', message: '服务器错误' },
   });

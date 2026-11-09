@@ -107,6 +107,12 @@ export interface CheckinPhoto {
   createdAt: string;
 }
 
+export interface CheckinSummary {
+  photos: CheckinPhoto[];
+  days: number;
+  totalPhotos: number;
+}
+
 export interface Exercise {
   id: string;
   name: string;

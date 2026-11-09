@@ -1,5 +1,6 @@
 import Fastify, { type FastifyInstance, type FastifyReply, type FastifyRequest } from 'fastify';
 import fastifyStatic from '@fastify/static';
+import fastifyMultipart from '@fastify/multipart';
 import { existsSync } from 'node:fs';
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
@@ -12,13 +13,17 @@ import { subjectsRoutes } from './routes/subjects';
 import { studyArrangementsRoutes } from './routes/studyArrangements';
 import { studyTimerRoutes } from './routes/studyTimer';
 import { studySessionsRoutes } from './routes/studySessions';
+import { filesRoutes } from './routes/files';
+import { checkinsRoutes } from './routes/checkins';
 import { sendApiError } from './lib/http';
 import { createDbManager, type DbManager } from './db/connection';
+import { createFileService, type FileService } from './services/files';
 import { migrate } from './db/migrate';
 
 declare module 'fastify' {
   interface FastifyInstance {
     dbManager: DbManager;
+    fileService: FileService;
   }
 }
 
@@ -47,12 +52,21 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   const dbManager = createDbManager(dbPath);
   migrate(dbManager.get());
   app.decorate('dbManager', dbManager);
+  const fileService = createFileService(
+    dbManager.get(),
+    path.join(options.dataDir, 'files'),
+  );
+  app.decorate('fileService', fileService);
   app.addHook('onClose', async () => {
     dbManager.close();
   });
 
   app.setErrorHandler((error, _request, reply) => sendApiError(reply, error));
   app.setNotFoundHandler(apiNotFound);
+
+  await app.register(fastifyMultipart, {
+    limits: { fileSize: 20 * 1024 * 1024, files: 20 },
+  });
 
   await app.register(healthRoutes);
   await app.register(systemRoutes);
@@ -63,6 +77,8 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   await app.register(studyArrangementsRoutes);
   await app.register(studyTimerRoutes);
   await app.register(studySessionsRoutes);
+  await app.register(filesRoutes);
+  await app.register(checkinsRoutes);
 
   const clientDir = path.resolve(process.cwd(), 'dist/client');
   if (existsSync(clientDir)) {

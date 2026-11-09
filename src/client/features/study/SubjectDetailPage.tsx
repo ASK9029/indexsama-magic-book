@@ -8,6 +8,7 @@ import { useSubjects } from '@client/hooks/useSubjects';
 import { useStudyTimer } from '@client/hooks/useStudyTimer';
 import { SubjectOverview } from './SubjectOverview';
 import { SubjectSessions } from './SubjectSessions';
+import { CheckinAlbum } from './CheckinAlbum';
 
 export function SubjectDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -68,7 +69,10 @@ export function SubjectDetailPage() {
 
       <div className="mt-5">
         {tab === 'overview' ? (
-          <SubjectOverview subject={subject} />
+          <div className="space-y-4">
+            <SubjectOverview subject={subject} />
+            <CheckinAlbum subjectId={subject.id} />
+          </div>
         ) : tab === 'materials' ? (
           <EmptyState title="资料" description="学习资料将在 Task 13 接入。" />
         ) : (
