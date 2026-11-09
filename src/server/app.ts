@@ -20,6 +20,8 @@ import { exercisesRoutes } from './routes/exercises';
 import { fitnessPlanRoutes } from './routes/fitnessPlan';
 import { workoutsRoutes } from './routes/workouts';
 import { upgradesRoutes } from './routes/upgrades';
+import { fitnessStatsRoutes } from './routes/fitnessStats';
+import { weightsRoutes } from './routes/weights';
 import { sendApiError } from './lib/http';
 import { createDbManager, type DbManager } from './db/connection';
 import { createFileService, type FileService } from './services/files';
@@ -91,6 +93,8 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   await app.register(fitnessPlanRoutes);
   await app.register(workoutsRoutes);
   await app.register(upgradesRoutes);
+  await app.register(fitnessStatsRoutes);
+  await app.register(weightsRoutes);
 
   const clientDir = path.resolve(process.cwd(), 'dist/client');
   if (existsSync(clientDir)) {

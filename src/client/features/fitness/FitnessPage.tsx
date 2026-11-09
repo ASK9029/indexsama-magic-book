@@ -1,11 +1,10 @@
 import { useSearchParams } from 'react-router-dom';
-import { EmptyState } from '@client/components/ui/EmptyState';
 import { PageHeader } from '@client/components/ui/PageHeader';
 import { ExerciseLibraryPage } from './ExerciseLibraryPage';
 import { FitnessTabs } from './FitnessTabs';
+import { StatsPage } from './StatsPage';
 import { TodayTrainingPage } from './TodayTrainingPage';
 import { WeeklyPlanPage } from './WeeklyPlanPage';
-import { TrainingHistory } from './TrainingHistory';
 
 export function FitnessPage() {
   const [params, setParams] = useSearchParams();
@@ -28,13 +27,7 @@ export function FitnessPage() {
         ) : tab === 'exercises' ? (
           <ExerciseLibraryPage />
         ) : tab === 'stats' ? (
-          <div className="space-y-4">
-            <TrainingHistory />
-            <EmptyState
-              title="统计图表"
-              description="体重、训练量和力量曲线将在 Task 16 接入。"
-            />
-          </div>
+          <StatsPage />
         ) : (
           <TodayTrainingPage />
         )}

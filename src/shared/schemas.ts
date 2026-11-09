@@ -178,3 +178,10 @@ export const upgradeCreateSchema = z.object({
 });
 
 export const upgradeUpdateSchema = upgradeCreateSchema.partial();
+
+export const weightCreateSchema = z.object({
+  date: dateSchema,
+  weightKg: z.number().positive().max(1000),
+});
+
+export const weightUpdateSchema = weightCreateSchema.partial();
