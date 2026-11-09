@@ -5,13 +5,12 @@ const items: Array<{
   kind: QuickAddKind;
   label: string;
   hint: string;
-  enabled: boolean;
 }> = [
-  { kind: 'task', label: '任务', hint: '加一件事', enabled: true },
-  { kind: 'memo', label: '备忘', hint: '随手记', enabled: true },
-  { kind: 'study', label: '学习', hint: '模块接入后开放', enabled: false },
-  { kind: 'weight', label: '体重', hint: '模块接入后开放', enabled: false },
-  { kind: 'water', label: '喝水', hint: '模块接入后开放', enabled: false },
+  { kind: 'task', label: '任务', hint: '加一件事' },
+  { kind: 'memo', label: '备忘', hint: '随手记' },
+  { kind: 'study', label: '学习', hint: '加学习安排' },
+  { kind: 'weight', label: '体重', hint: '记录体重' },
+  { kind: 'water', label: '喝水', hint: '记一杯水' },
 ];
 
 export function QuickAddMenu({
@@ -31,9 +30,7 @@ export function QuickAddMenu({
             key={item.kind}
             type="button"
             onClick={() => onSelect(item.kind)}
-            className={`rounded-[10px] border border-line p-3 text-left transition hover:bg-canvas ${
-              item.enabled ? '' : 'opacity-50'
-            }`}
+            className="rounded-[10px] border border-line p-3 text-left transition hover:bg-canvas"
           >
             <div className="text-sm font-medium text-ink">{item.label}</div>
             <div className="mt-1 text-xs text-muted">{item.hint}</div>
