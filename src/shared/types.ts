@@ -277,6 +277,28 @@ export interface GameStats {
   currentPlaying: Game | null;
 }
 
+export interface DataInfo {
+  dataDir: string;
+  counts: {
+    tasks: number;
+    memos: number;
+    subjects: number;
+    materials: number;
+    checkins: number;
+    sessions: number;
+    workouts: number;
+    meals: number;
+    games: number;
+  };
+  storage: {
+    dbBytes: number;
+    filesBytes: number;
+    totalBytes: number;
+  };
+  lastBackupAt: string | null;
+  version: string;
+}
+
 export interface Settings {
   theme: Theme;
   weekStart: 0 | 1;

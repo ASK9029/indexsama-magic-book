@@ -1,12 +1,12 @@
 import { useSearchParams } from 'react-router-dom';
 import { PageHeader } from '@client/components/ui/PageHeader';
-import { EmptyState } from '@client/components/ui/EmptyState';
 import { useSettings } from '@client/hooks/useSettings';
 import { useTheme } from '@client/hooks/useTheme';
 import { SettingsTabs } from './SettingsTabs';
 import { AppearanceTab } from './AppearanceTab';
 import { DataTab } from './DataTab';
 import { PreferencesTab } from './PreferencesTab';
+import { DangerTab } from './DangerTab';
 
 export function SettingsPage() {
   const [params, setParams] = useSearchParams();
@@ -35,7 +35,7 @@ export function SettingsPage() {
         ) : active === 'preferences' ? (
           <PreferencesTab settings={settings} update={update} />
         ) : (
-          <EmptyState title="危险区" description="清空数据将在 Task 24 接入。" />
+          <DangerTab />
         )}
       </div>
     </div>
