@@ -135,3 +135,36 @@ export const planDaySchema = z.object({
   isRest: z.boolean(),
   exercises: z.array(planExerciseSchema).max(30),
 });
+
+export const workoutStartSchema = z.object({
+  date: dateSchema,
+  name: z.string().trim().max(50).optional(),
+  exercises: z.array(planExerciseSchema).optional(),
+});
+
+export const workoutSetCreateSchema = z.object({
+  exerciseId: z.string().nullable().optional(),
+  exerciseName: z.string().trim().min(1).max(50),
+  weightKg: z.number().nonnegative().nullable().optional(),
+  reps: z.number().int().min(1).max(1000),
+  done: z.boolean().optional(),
+});
+
+export const workoutSetUpdateSchema = z.object({
+  weightKg: z.number().nonnegative().nullable().optional(),
+  reps: z.number().int().min(1).max(1000).optional(),
+  done: z.boolean().optional(),
+});
+
+export const workoutSessionUpdateSchema = z.object({
+  name: z.string().trim().min(1).max(50).optional(),
+  note: z.string().max(2000).optional(),
+  durationMinutes: z.number().int().min(1).max(1440).optional(),
+  status: z.enum(['draft', 'completed']).optional(),
+});
+
+export const workoutFinishSchema = z.object({
+  durationMinutes: z.number().int().min(1).max(1440),
+  note: z.string().max(2000).optional().default(''),
+  confirmEmpty: z.boolean().optional().default(false),
+});

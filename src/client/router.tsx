@@ -10,6 +10,7 @@ import { SubjectDetailPage } from './features/study/SubjectDetailPage';
 import { MaterialsPage } from './features/study/MaterialsPage';
 import { MaterialDetailPage } from './features/study/MaterialDetailPage';
 import { FitnessPage } from './features/fitness/FitnessPage';
+import { SessionPage } from './features/fitness/SessionPage';
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -39,5 +40,9 @@ export const routes: RouteObject[] = [
       { path: 'games', element: <Placeholder title="游戏娱乐" /> },
       { path: 'settings', element: <SettingsPage /> },
     ],
+  },
+  {
+    path: '/fitness/session/:id',
+    element: <SessionPage />,
   },
 ];
