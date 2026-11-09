@@ -25,6 +25,8 @@ export const queryKeys = {
   dietDay: (date: string) => ['dietDay', date] as const,
   water: (date: string) => ['water', date] as const,
   games: (filters: Record<string, string | undefined>) => ['games', filters] as const,
+  game: (id: string) => ['game', id] as const,
+  gameStats: ['gameStats'] as const,
   fitnessStats: (view: string, anchor: string, exerciseId?: string) =>
     ['stats', 'fitness', view, anchor, exerciseId ?? ''] as const,
   dietStats: (view: string, anchor: string) => ['stats', 'diet', view, anchor] as const,

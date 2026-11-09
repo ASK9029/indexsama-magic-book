@@ -26,6 +26,7 @@ import { foodsRoutes } from './routes/foods';
 import { mealsRoutes } from './routes/meals';
 import { waterRoutes } from './routes/water';
 import { dietStatsRoutes } from './routes/dietStats';
+import { gamesRoutes } from './routes/games';
 import { sendApiError } from './lib/http';
 import { createDbManager, type DbManager } from './db/connection';
 import { createFileService, type FileService } from './services/files';
@@ -105,6 +106,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   await app.register(mealsRoutes);
   await app.register(waterRoutes);
   await app.register(dietStatsRoutes);
+  await app.register(gamesRoutes);
 
   const clientDir = path.resolve(process.cwd(), 'dist/client');
   if (existsSync(clientDir)) {

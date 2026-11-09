@@ -249,3 +249,27 @@ export const waterCreateSchema = z.object({
 export const waterUndoSchema = z.object({
   date: dateSchema,
 });
+
+export const GAME_STATUSES = [
+  'wishlist',
+  'playing',
+  'completed',
+  'paused',
+] as const;
+
+export const gameCreateSchema = z.object({
+  title: z.string().trim().min(1).max(100),
+  platform: z.string().trim().min(1).max(50),
+  status: z.enum(GAME_STATUSES).optional(),
+  rating: z.number().int().min(1).max(5).nullable().optional(),
+  playtimeMinutes: z.number().int().nonnegative().max(1000000).optional(),
+  startDate: dateSchema.nullable().optional(),
+  finishDate: dateSchema.nullable().optional(),
+  notes: z.string().max(5000).optional(),
+});
+
+export const gameUpdateSchema = gameCreateSchema.partial();
+
+export const gamePlaytimeSchema = z.object({
+  minutes: z.number().int().nonnegative().max(10000),
+});

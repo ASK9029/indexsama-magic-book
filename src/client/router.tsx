@@ -1,7 +1,5 @@
 import type { RouteObject } from 'react-router-dom';
 import { AppShell } from './components/layout/AppShell';
-import { EmptyState } from './components/ui/EmptyState';
-import { PageHeader } from './components/ui/PageHeader';
 import { SettingsPage } from './features/settings/SettingsPage';
 import { HomePage } from './features/home/HomePage';
 import { TodayPage } from './features/today/TodayPage';
@@ -12,18 +10,8 @@ import { MaterialDetailPage } from './features/study/MaterialDetailPage';
 import { FitnessPage } from './features/fitness/FitnessPage';
 import { SessionPage } from './features/fitness/SessionPage';
 import { DietPage } from './features/diet/DietPage';
-
-function Placeholder({ title }: { title: string }) {
-  return (
-    <div>
-      <PageHeader title={title} subtitle="页面建设中" />
-      <EmptyState
-        title="这里还在搭建"
-        description="按开发计划，下一步接入这个模块。"
-      />
-    </div>
-  );
-}
+import { GamesPage } from './features/games/GamesPage';
+import { GameDetailPage } from './features/games/GameDetailPage';
 
 export const routes: RouteObject[] = [
   {
@@ -38,7 +26,8 @@ export const routes: RouteObject[] = [
       { path: 'study/materials/:id', element: <MaterialDetailPage /> },
       { path: 'fitness', element: <FitnessPage /> },
       { path: 'diet', element: <DietPage /> },
-      { path: 'games', element: <Placeholder title="游戏娱乐" /> },
+      { path: 'games', element: <GamesPage /> },
+      { path: 'games/:id', element: <GameDetailPage /> },
       { path: 'settings', element: <SettingsPage /> },
     ],
   },

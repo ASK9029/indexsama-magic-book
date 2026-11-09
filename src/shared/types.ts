@@ -264,6 +264,19 @@ export interface Game {
   updatedAt: string;
 }
 
+export type GameWithCover = Game & { coverUrl: string | null };
+
+export interface GameStats {
+  playing: number;
+  wishlist: number;
+  completed: number;
+  paused: number;
+  totalMinutes: number;
+  completedThisYear: number;
+  recentCompleted: Game[];
+  currentPlaying: Game | null;
+}
+
 export interface Settings {
   theme: Theme;
   weekStart: 0 | 1;
