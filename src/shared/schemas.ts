@@ -112,3 +112,26 @@ export const materialUpdateSchema = z.object({
   excerpt: z.string().max(2000).optional(),
   body: z.string().max(100000).optional(),
 });
+
+export const exerciseCreateSchema = z.object({
+  name: z.string().trim().min(1).max(50),
+  muscleGroup: z.enum(['胸', '背', '腿', '肩', '手臂', '核心', '全身']),
+  equipment: z.enum(['杠铃', '哑铃', '器械', '绳索', '自重', '其他']),
+  type: z.enum(['weight', 'bodyweight']),
+  notes: z.string().max(500).optional().default(''),
+});
+
+export const exerciseUpdateSchema = exerciseCreateSchema.partial();
+
+export const planExerciseSchema = z.object({
+  exerciseId: z.string().min(1),
+  targetSets: z.number().int().min(1).max(20),
+  targetReps: z.string().trim().min(1).max(30),
+  sortOrder: z.number().int().min(0).optional(),
+});
+
+export const planDaySchema = z.object({
+  name: z.string().max(50).optional().default(''),
+  isRest: z.boolean(),
+  exercises: z.array(planExerciseSchema).max(30),
+});

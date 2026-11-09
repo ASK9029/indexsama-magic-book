@@ -9,6 +9,7 @@ import { SubjectsPage } from './features/study/SubjectsPage';
 import { SubjectDetailPage } from './features/study/SubjectDetailPage';
 import { MaterialsPage } from './features/study/MaterialsPage';
 import { MaterialDetailPage } from './features/study/MaterialDetailPage';
+import { FitnessPage } from './features/fitness/FitnessPage';
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -33,7 +34,7 @@ export const routes: RouteObject[] = [
       { path: 'study/subjects/:id', element: <SubjectDetailPage /> },
       { path: 'study/materials', element: <MaterialsPage /> },
       { path: 'study/materials/:id', element: <MaterialDetailPage /> },
-      { path: 'fitness', element: <Placeholder title="健身计划" /> },
+      { path: 'fitness', element: <FitnessPage /> },
       { path: 'diet', element: <Placeholder title="饮食计划" /> },
       { path: 'games', element: <Placeholder title="游戏娱乐" /> },
       { path: 'settings', element: <SettingsPage /> },

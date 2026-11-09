@@ -16,9 +16,12 @@ import { studySessionsRoutes } from './routes/studySessions';
 import { filesRoutes } from './routes/files';
 import { checkinsRoutes } from './routes/checkins';
 import { materialsRoutes } from './routes/materials';
+import { exercisesRoutes } from './routes/exercises';
+import { fitnessPlanRoutes } from './routes/fitnessPlan';
 import { sendApiError } from './lib/http';
 import { createDbManager, type DbManager } from './db/connection';
 import { createFileService, type FileService } from './services/files';
+import { seedExercises } from './db/seed/exercises';
 import { migrate } from './db/migrate';
 
 declare module 'fastify' {
@@ -52,6 +55,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   const dbPath = options.dbPath ?? path.join(options.dataDir, 'app.db');
   const dbManager = createDbManager(dbPath);
   migrate(dbManager.get());
+  seedExercises(dbManager.get());
   app.decorate('dbManager', dbManager);
   const fileService = createFileService(
     dbManager.get(),
@@ -81,6 +85,8 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   await app.register(filesRoutes);
   await app.register(checkinsRoutes);
   await app.register(materialsRoutes);
+  await app.register(exercisesRoutes);
+  await app.register(fitnessPlanRoutes);
 
   const clientDir = path.resolve(process.cwd(), 'dist/client');
   if (existsSync(clientDir)) {

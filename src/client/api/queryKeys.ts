@@ -17,6 +17,8 @@ export const queryKeys = {
     ['materials', filters] as const,
   material: (id: string) => ['material', id] as const,
   fitnessPlan: ['fitness', 'plan'] as const,
+  exercises: (filters: Record<string, string | undefined>) =>
+    ['exercises', filters] as const,
   workoutSession: (id: string) => ['fitness', 'session', id] as const,
   dietDay: (date: string) => ['diet', 'day', date] as const,
   games: (filters: Record<string, string | undefined>) => ['games', filters] as const,
