@@ -299,6 +299,57 @@ export interface DataInfo {
   version: string;
 }
 
+export interface DayMealSummary {
+  meal: Meal;
+  plannedCalories: number;
+  plannedProtein: number;
+  actualCalories: number;
+  actualProtein: number;
+  done: boolean;
+  planned: boolean;
+}
+
+export interface DayAggregate {
+  date: LocalDate;
+  tasks: Task[];
+  study: {
+    arrangements: (StudyArrangement & { actualMinutes: number })[];
+  };
+  fitness: {
+    plan: PlanDay | null;
+    session: WorkoutSession | null;
+  };
+  diet: {
+    meals: DayMealSummary[];
+    summary: { calories: number; protein: number; waterMl: number };
+  };
+  progress: { done: number; total: number };
+}
+
+export interface HomeItem {
+  id: string;
+  group: 'task' | 'study' | 'fitness' | 'diet';
+  title: string;
+  subtitle: string;
+  done: boolean;
+  href: string;
+}
+
+export interface HomeAggregate {
+  date: LocalDate;
+  progress: { done: number; total: number };
+  items: HomeItem[];
+  memos: Memo[];
+  studySummary: { minutes: number; arrangements: number };
+  fitnessSummary: {
+    planName: string | null;
+    completed: boolean;
+    minutes: number;
+  };
+  dietSummary: { calories: number; protein: number; waterMl: number };
+  gameSummary: GameStats;
+}
+
 export interface Settings {
   theme: Theme;
   weekStart: 0 | 1;

@@ -1,11 +1,13 @@
 import { useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Plus } from 'lucide-react';
 import { addDays } from '@shared/dates';
 import { todayLocal } from '@client/lib/clientDates';
 import { useTasks, type TaskInput } from '@client/hooks/useTasks';
 import { useArrangements } from '@client/hooks/useArrangements';
 import { useSubjects } from '@client/hooks/useSubjects';
+import { useDay } from '@client/hooks/useDay';
+import { useDietMutations } from '@client/hooks/useDietDay';
 import { Button } from '@client/components/ui/Button';
 import { EmptyState } from '@client/components/ui/EmptyState';
 import { PageHeader } from '@client/components/ui/PageHeader';
@@ -13,7 +15,14 @@ import { DateHeader } from './DateHeader';
 import { TaskGroup } from './TaskGroup';
 import { TaskModal } from './TaskModal';
 import { TaskRow } from './TaskRow';
-import type { Task } from '@shared/types';
+import type { Meal, Task } from '@shared/types';
+
+const MEAL_LABELS: Record<Meal, string> = {
+  breakfast: '早餐',
+  lunch: '午餐',
+  dinner: '晚餐',
+  snack: '加餐',
+};
 
 export function TodayPage() {
   const [params, setParams] = useSearchParams();
@@ -25,6 +34,8 @@ export function TodayPage() {
     update: updateArrangement,
   } = useArrangements(date);
   const { subjects } = useSubjects(false);
+  const { data: day } = useDay(date);
+  const dietMutations = useDietMutations(date);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Task | null>(null);
@@ -40,6 +51,15 @@ export function TodayPage() {
 
   const doneCount = tasks.filter((task) => task.done).length;
   const visible = tasks.filter((task) => task.id !== pendingDelete?.id);
+  const studyItems = day?.study?.arrangements ?? arrangements;
+  const plannedMeals = day?.diet?.meals?.filter((meal) => meal.planned) ?? [];
+  const fitness = day?.fitness;
+  const hasFitness = Boolean(
+    fitness?.session ||
+      (fitness?.plan && !fitness.plan.isRest && fitness.plan.exercises.length > 0),
+  );
+  const progressDone = day?.progress?.done ?? doneCount;
+  const progressTotal = day?.progress?.total ?? tasks.length;
 
   const openCreate = () => {
     setEditing(null);
@@ -52,11 +72,8 @@ export function TodayPage() {
   };
 
   const save = (input: TaskInput) => {
-    if (editing) {
-      update.mutate({ id: editing.id, patch: input });
-    } else {
-      create.mutate(input);
-    }
+    if (editing) update.mutate({ id: editing.id, patch: input });
+    else create.mutate(input);
     setModalOpen(false);
     setEditing(null);
   };
@@ -103,8 +120,8 @@ export function TodayPage() {
       <DateHeader
         date={date}
         onChange={setDate}
-        done={doneCount}
-        total={tasks.length}
+        done={progressDone}
+        total={progressTotal}
       />
 
       <div className="space-y-4">
@@ -130,16 +147,20 @@ export function TodayPage() {
           )}
         </TaskGroup>
 
-        <TaskGroup title="学习" count={arrangements.length}>
-          {arrangementsLoading ? (
+        <TaskGroup title="学习" count={studyItems.length}>
+          {arrangementsLoading && !day ? (
             <p className="px-2 py-4 text-sm text-muted">正在加载…</p>
-          ) : arrangements.length === 0 ? (
+          ) : studyItems.length === 0 ? (
             <p className="px-2 py-4 text-sm text-muted">今天没有学习安排。</p>
           ) : (
-            arrangements.map((arrangement) => {
+            studyItems.map((arrangement) => {
               const subject = subjects.find(
                 (item) => item.id === arrangement.subjectId,
               );
+              const actualMinutes =
+                'actualMinutes' in arrangement
+                  ? arrangement.actualMinutes
+                  : undefined;
               return (
                 <div
                   key={arrangement.id}
@@ -158,18 +179,86 @@ export function TodayPage() {
                     className="h-4 w-4 rounded border-line accent-[var(--accent)]"
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm text-ink">{arrangement.content}</p>
+                    <p className="truncate text-sm text-ink">
+                      {arrangement.content}
+                    </p>
                     <p className="text-xs text-muted">
-                      {subject?.name ?? '未知科目'} · {arrangement.plannedMinutes} 分钟
+                      {subject?.name ?? '未知科目'} · {arrangement.plannedMinutes}{' '}
+                      分钟
+                      {actualMinutes !== undefined
+                        ? ` · 实际 ${actualMinutes} 分钟`
+                        : ''}
                     </p>
                   </div>
+                  <Link
+                    to="/study/subjects"
+                    className="text-xs text-accent"
+                  >
+                    去学习
+                  </Link>
                 </div>
               );
             })
           )}
         </TaskGroup>
-        <TaskGroup title="健身" placeholder="尚未接入" />
-        <TaskGroup title="饮食" placeholder="尚未接入" />
+
+        <TaskGroup title="健身" count={hasFitness ? 1 : 0}>
+          {hasFitness ? (
+            <div className="flex items-center gap-3 rounded-[10px] px-2 py-2.5">
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm text-ink">
+                  {fitness?.session?.name ?? fitness?.plan?.name ?? '今日训练'}
+                </p>
+                <p className="text-xs text-muted">
+                  {fitness?.session
+                    ? `${fitness.session.status === 'completed' ? '已完成' : '进行中'} · ${fitness.session.durationMinutes ?? 0} 分钟`
+                    : '按周计划训练；完成状态来自训练会话'}
+                </p>
+              </div>
+              <Link to="/fitness?tab=today" className="text-xs text-accent">
+                去训练
+              </Link>
+            </div>
+          ) : (
+            <p className="px-2 py-4 text-sm text-muted">今天没有训练。</p>
+          )}
+        </TaskGroup>
+
+        <TaskGroup title="饮食" count={plannedMeals.length}>
+          {plannedMeals.length === 0 ? (
+            <p className="px-2 py-4 text-sm text-muted">今天没有计划饮食。</p>
+          ) : (
+            plannedMeals.map((meal) => (
+              <div
+                key={meal.meal}
+                className="flex items-center gap-3 rounded-[10px] px-2 py-2.5"
+              >
+                <input
+                  type="checkbox"
+                  checked={meal.done}
+                  onChange={() =>
+                    dietMutations.setDone.mutate({
+                      meal: meal.meal,
+                      done: !meal.done,
+                    })
+                  }
+                  aria-label={`完成 ${MEAL_LABELS[meal.meal]}`}
+                  className="h-4 w-4 rounded border-line accent-[var(--accent)]"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm text-ink">{MEAL_LABELS[meal.meal]}</p>
+                  <p className="text-xs text-muted">
+                    计划 {Math.round(meal.plannedCalories)} kcal · 实际{' '}
+                    {Math.round(meal.actualCalories)} kcal
+                  </p>
+                </div>
+                <Link to="/diet" className="text-xs text-accent">
+                  去记录
+                </Link>
+              </div>
+            ))
+          )}
+        </TaskGroup>
       </div>
 
       {pendingDelete ? (

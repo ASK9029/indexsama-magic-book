@@ -29,6 +29,8 @@ import { dietStatsRoutes } from './routes/dietStats';
 import { gamesRoutes } from './routes/games';
 import { dataInfoRoutes } from './routes/dataInfo';
 import { backupRoutes } from './routes/backup';
+import { dayRoutes } from './routes/day';
+import { homeRoutes } from './routes/home';
 import { sendApiError } from './lib/http';
 import { createDbManager, type DbManager } from './db/connection';
 import { createFileService, type FileService } from './services/files';
@@ -111,6 +113,8 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   await app.register(gamesRoutes);
   await app.register(dataInfoRoutes);
   await app.register(backupRoutes);
+  await app.register(dayRoutes);
+  await app.register(homeRoutes);
 
   const clientDir = path.resolve(process.cwd(), 'dist/client');
   if (existsSync(clientDir)) {
