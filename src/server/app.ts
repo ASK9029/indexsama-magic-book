@@ -6,6 +6,14 @@ import path from 'node:path';
 import { healthRoutes } from './routes/health';
 import { systemRoutes } from './routes/system';
 import { sendApiError } from './lib/http';
+import { createDbManager, type DbManager } from './db/connection';
+import { migrate } from './db/migrate';
+
+declare module 'fastify' {
+  interface FastifyInstance {
+    dbManager: DbManager;
+  }
+}
 
 export interface BuildAppOptions {
   dataDir: string;
@@ -27,6 +35,14 @@ function apiNotFound(request: FastifyRequest, reply: FastifyReply): FastifyReply
 export async function buildApp(options: BuildAppOptions): Promise<FastifyInstance> {
   const app = Fastify({ logger: options.logger ?? false });
   await mkdir(options.dataDir, { recursive: true });
+
+  const dbPath = options.dbPath ?? path.join(options.dataDir, 'app.db');
+  const dbManager = createDbManager(dbPath);
+  migrate(dbManager.get());
+  app.decorate('dbManager', dbManager);
+  app.addHook('onClose', async () => {
+    dbManager.close();
+  });
 
   app.setErrorHandler((error, _request, reply) => sendApiError(reply, error));
   app.setNotFoundHandler(apiNotFound);
